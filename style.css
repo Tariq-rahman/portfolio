@@ -46,73 +46,75 @@ body {
     line-height: 1.5em;
     margin: 0;
   }
-  
-  .project {
-    background-color: white;
-    padding: 1em;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1em;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .project:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .project h3 {
-    font-size: 1.2em;
-    margin: 0;
-  }
-  
-  .project p {
-    font-size: 0.9em;
-    margin: 0;
-    margin-top: 0.5em;
-  }
-  
-  .project a {
-    font-size: 0.9em;
-    color: #333;
-    text-decoration: none;
-    margin-top: 1em;
-    display: block;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .project a:hover {
-    color: #0070c9;
-  }
-  
-  section form {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    padding: 1em;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  section form input[type="text"],
-  section form input[type="email"],
-  section form textarea {
-    font-size: 0.9em;
-    padding: 0.5em;
-    margin-bottom: 1em;
-    border: none;
-    border-bottom: 1px solid #333;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  section form input[type="submit"] {
-    background-color: #333;
-    color: white;
-    padding: 0.5em;
-    border: none;
-    border-radius: 4
-  }  
 
   footer p {
     padding-left: 32px;
     padding-right: 32px;
+  }
+
+  .card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .card {
+    width: 300px;
+    height: 400px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.2);
+    overflow: hidden;
+    margin: 2em auto;
+    margin-right: 35px;
+    margin-left: 35px
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card .info {
+    padding: 1em;
+  }
+
+  .card .info h3 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+  }
+
+  .card .info p {
+    font-size: 0.9em;
+    color: #777777;
+    margin-bottom: 1em;
+  }
+
+  .card .info .tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .card .info .tags span {
+    background-color: #f2f2f2;
+    color: #777777;
+    border-radius: 10px;
+    padding: 0.5em;
+    margin-right: 0.5em;
+    font-size: 0.8em;
+  }
+
+  #tech-stack {
+    text-align: center;
+  }
+
+  #contact {
+    text-align: center;
   }
