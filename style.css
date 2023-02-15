@@ -143,12 +143,52 @@ body {
     flex-wrap: wrap;
   }
 
-  .tech-stack-container > img {
-    margin: 20px;
-  }
+  /*.tech-stack-container > img {*/
+  /*  margin: 20px;*/
+  /*}*/
 
   .divider {
     mix-blend-mode: normal;
     opacity: 0.3;
     border: 2px solid #666666;
+  }
+
+  .tech .tech-label {
+    background-color: slategray;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 100px;
+    position: absolute;
+    bottom: -60px;
+    left: 50px;
+    white-space: nowrap;
+    transform: translate(-50%, -50px);
+    letter-spacing: 1px;
+    font-size: 15px;
+    opacity: 0;
+    transition: all 0.3s;
+  }
+
+  .tech {
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .tech .tech-label::before {
+    content: "";
+    position: absolute;
+    width: 10px; height: 10px;
+    background-color: slategrey;
+    top: 0; left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .tech img:hover + .tech-label {
+    opacity: 1;
+    transform: translateX(-50%);
+    box-shadow: 0 10px 20px rgba(86, 86, 198, 0.3);
+  }
+
+  .tech {
+    margin: 30px;
   }
