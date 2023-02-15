@@ -1,0 +1,19 @@
+ .game-container {
+     text-align: center;
+     vertical-align: center;
+     margin-top: 35px;
+     margin-bottom: 35px;
+ }
+
+ body {
+     text-align: center;
+ }
+
+ canvas {
+    background-color: white;
+    border: 5px solid darkred;
+ }
+
+ button {
+     margin: 20px;
+ }
