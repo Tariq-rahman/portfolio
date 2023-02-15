@@ -7,8 +7,9 @@ const DOWN = "DOWN";
 const LEFT = "LEFT";
 const RIGHT = "RIGHT";
 
+var c = document.getElementById("snake-canvas");
+var ctx = c.getContext("2d");
 var score = 0;
-
 var apple = {
     x: 100,
     y: 100
@@ -137,8 +138,6 @@ function changeDirection(direction) {
 
 // Start the game
 function start() {
-    let c = document.getElementById("snake-canvas");
-    let ctx = c.getContext("2d");
     document.addEventListener("keydown", (event) => {
         switch (event.key) {
             case "ArrowRight":
@@ -210,14 +209,46 @@ function isInside(a, b) {
 // Creates a new apple in a random location
 // Ensures that the apple does not sit on the edges
 function newApple() {
-    apple.x = Math.floor(Math.random() * (Xmax - unitSize * 2)) + unitSize // generates random number between 10 ~ 590
-    apple.y = Math.floor(Math.random() * (Ymax - unitSize * 2)) + unitSize
+    apple.x = Math.floor(Math.random() * (Xmax/unitSize)) * unitSize // generates random number between 0 ~ 600 in increments of 10
+    apple.y = Math.floor(Math.random() * (Ymax/unitSize)) * unitSize
 }
 
 function updateScore() {
     console.log(score)
 }
 
-function addSegment() {
+// Resets the game and the board. todo wierd bug where spamming reset speeds up game??
+function reset() {
+     score = 0;
 
+     apple = {
+        x: 100,
+        y: 100
+    }
+
+     snake = {
+        body: [
+            {
+                x: 300,
+                y: 300,
+            },
+            {
+                x: 310,
+                y: 300
+            },
+            {
+                x:320,
+                y:300
+            }
+        ]
+    }
+
+     velocity = {
+        direction: LEFT,
+        x: -unitSize,
+        y: 0
+    }
+     gaming = false
+
+    ctx.clearRect(0, 0, Xmax, Ymax)
 }
