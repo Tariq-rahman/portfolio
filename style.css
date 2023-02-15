@@ -65,9 +65,7 @@ body {
     border-radius: 10px;
     box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.2);
     overflow: hidden;
-    margin: 2em auto;
-    margin-right: 35px;
-    margin-left: 35px
+    margin: 2em 35px;
   }
 
   .card:hover {

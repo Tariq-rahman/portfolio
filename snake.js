@@ -214,7 +214,8 @@ function newApple() {
 }
 
 function updateScore() {
-    console.log(score)
+    let val = document.getElementById("score-value")
+    val.innerHTML = score
 }
 
 // Resets the game and the board. todo wierd bug where spamming reset speeds up game??
@@ -250,5 +251,6 @@ function reset() {
     }
      gaming = false
 
+    updateScore()
     ctx.clearRect(0, 0, Xmax, Ymax)
 }
