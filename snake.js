@@ -1,8 +1,6 @@
 const unitSize = 10;
 const Xmax = 600;
 const Ymax = 600;
-var c = document.getElementById("snake-canvas");
-var ctx = c.getContext("2d");
 var snake = {
     body: [
         {
@@ -25,34 +23,43 @@ const LEFT = "LEFT";
 const RIGHT = "RIGHT";
 var velocity = {
     direction: LEFT,
-    x: unitSize,
+    x: -unitSize,
     y: 0
 }
+var gaming = false
 
-drawSnake(snake)
 
-
-function drawSnake() {
+function drawSnake(ctx) {
     ctx.fillStyle = '#00FF00';
     ctx.strokeStyle = '#000000';
+
   for (let i=0; i < snake.body.length; i++) {
       ctx.fillRect(snake.body[i].x, snake.body[i].y, unitSize, unitSize);
       ctx.strokeRect(snake.body[i].x, snake.body[i].y, unitSize, unitSize);
   }
 }
 
-function move() {
-    let head = snake.body[0]
-    head.x = head.x + velocity.x
-    head.y = head.y + velocity.y
+function clearTail(ctx, tail) {
+    ctx.clearRect(tail.x -1 , tail.y -1 , unitSize + 2, unitSize + 2)
+}
+
+function move(ctx) {
+    let head = {
+        x: 0,
+        y: 0
+    }
+
+    head.x = snake.body[0].x + velocity.x
+    head.y = snake.body[0].y + velocity.y
 
     snake.body.unshift(head)
-    snake.body.pop()
-    drawSnake()
+    let tail = snake.body.pop()
+
     if (head.x <= 0 || head.x >= Xmax || head.y <= 0 || head.y >= Ymax) {
         gameOver()
     }
 
+    return tail
 }
 
 function changeDirection(direction) {
@@ -94,7 +101,7 @@ function changeDirection(direction) {
 
         velocity.direction = UP
         velocity.x = 0
-        velocity.y = -unitSize
+        velocity.y = unitSize
     }
 
     // Up
@@ -106,14 +113,45 @@ function changeDirection(direction) {
 
         velocity.direction = DOWN
         velocity.x = 0
-        velocity.y = unitSize
+        velocity.y = -unitSize
     }
 }
 
 function start() {
-
+    let c = document.getElementById("snake-canvas");
+    let ctx = c.getContext("2d");
+    document.addEventListener("keydown", (event) => {
+        switch (event.key) {
+            case "ArrowRight":
+                changeDirection(RIGHT)
+                console.log("right")
+                break;
+            case "ArrowLeft":
+                changeDirection(LEFT)
+                console.log("left")
+                break;
+            case "ArrowUp":
+                changeDirection(UP)
+                console.log("up")
+                break;
+            case "ArrowDown":
+                changeDirection(DOWN)
+                console.log("down")
+                break;
+        }
+    });
+    gaming = true
+    drawSnake(ctx)
+    setInterval(function () {
+        if (gaming) {
+            let tail = move(ctx)
+            clearTail(ctx, tail)
+            drawSnake(ctx)
+        }
+    }, 100)
 }
 
 function gameOver() {
+    gaming = false
     console.log("gameover")
 }
