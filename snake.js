@@ -1,6 +1,13 @@
 const unitSize = 10;
 const Xmax = 600;
 const Ymax = 600;
+
+const UP = "UP";
+const DOWN = "DOWN";
+const LEFT = "LEFT";
+const RIGHT = "RIGHT";
+
+
 var snake = {
     body: [
         {
@@ -17,10 +24,7 @@ var snake = {
         }
     ]
 }
-const UP = "UP";
-const DOWN = "DOWN";
-const LEFT = "LEFT";
-const RIGHT = "RIGHT";
+
 var velocity = {
     direction: LEFT,
     x: -unitSize,
@@ -28,22 +32,28 @@ var velocity = {
 }
 var gaming = false
 
-
+// Draw the snake with a green body and black border
 function drawSnake(ctx) {
-    ctx.fillStyle = '#00FF00';
-    ctx.strokeStyle = '#000000';
+    ctx.fillStyle = '#00FF00'; // green
+    ctx.strokeStyle = '#000000'; // black
 
-  for (let i=0; i < snake.body.length; i++) {
-      ctx.fillRect(snake.body[i].x, snake.body[i].y, unitSize, unitSize);
-      ctx.strokeRect(snake.body[i].x, snake.body[i].y, unitSize, unitSize);
-  }
+    // Loop through the body segments and draw them
+    for (let i=0; i < snake.body.length; i++) {
+        ctx.fillRect(snake.body[i].x, snake.body[i].y, unitSize, unitSize);
+        ctx.strokeRect(snake.body[i].x, snake.body[i].y, unitSize, unitSize);
+    }
 }
 
+// Clear the tail segment of the snake body
 function clearTail(ctx, tail) {
+    // Clear the tail end after moving. +2 on the unit size to account for the border
     ctx.clearRect(tail.x -1 , tail.y -1 , unitSize + 2, unitSize + 2)
 }
 
-function move(ctx) {
+// Move the snake with the current velocity
+// implements movement by adding a head segment to the body and removing the tail
+// returns the tail so that it can be cleared by the canvas
+function move() {
     let head = {
         x: 0,
         y: 0
@@ -53,15 +63,12 @@ function move(ctx) {
     head.y = snake.body[0].y + velocity.y
 
     snake.body.unshift(head)
-    let tail = snake.body.pop()
 
-    if (head.x <= 0 || head.x >= Xmax || head.y <= 0 || head.y >= Ymax) {
-        gameOver()
-    }
 
-    return tail
+    return snake.body.pop()
 }
 
+// Changes the direction of the snake, by the use of the arrow keys
 function changeDirection(direction) {
     // If we're already moving in the direction do nothing
     if (direction === velocity.direction) {
@@ -99,7 +106,7 @@ function changeDirection(direction) {
             return // cannot turn directly backwards
         }
 
-        velocity.direction = UP
+        velocity.direction = DOWN
         velocity.x = 0
         velocity.y = unitSize
     }
@@ -111,12 +118,13 @@ function changeDirection(direction) {
             return // cannot turn directly backwards
         }
 
-        velocity.direction = DOWN
+        velocity.direction = UP
         velocity.x = 0
         velocity.y = -unitSize
     }
 }
 
+// Start the game
 function start() {
     let c = document.getElementById("snake-canvas");
     let ctx = c.getContext("2d");
@@ -142,16 +150,24 @@ function start() {
     });
     gaming = true
     drawSnake(ctx)
+
+    // Start running the game. The speed is dictated by the interval timeout. Less is faster game
     setInterval(function () {
         if (gaming) {
             let tail = move(ctx)
             clearTail(ctx, tail)
             drawSnake(ctx)
+            checkGameOver()
         }
     }, 100)
 }
 
-function gameOver() {
-    gaming = false
-    console.log("gameover")
+// Checks if the game is over by comparing the head of the snake to the max coordinates
+// If the game is over, the game will end
+function checkGameOver() {
+    let head = snake.body[0]
+    if (head.x <= 0 || head.x >= Xmax || head.y <= 0 || head.y >= Ymax) {
+        gaming = false
+        alert("gameover")
+    }
 }
