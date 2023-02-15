@@ -7,6 +7,12 @@ const DOWN = "DOWN";
 const LEFT = "LEFT";
 const RIGHT = "RIGHT";
 
+var score = 0;
+
+var apple = {
+    x: 100,
+    y: 100
+}
 
 var snake = {
     body: [
@@ -44,16 +50,19 @@ function drawSnake(ctx) {
     }
 }
 
-// Clear the tail segment of the snake body
-function clearTail(ctx, tail) {
-    // Clear the tail end after moving. +2 on the unit size to account for the border
-    ctx.clearRect(tail.x -1 , tail.y -1 , unitSize + 2, unitSize + 2)
+// Draws an apple on the canvas
+function drawApple(ctx) {
+    ctx.fillStyle = '#EE4B2B' // red
+    ctx.strokeStyle = '#000000'; // black
+
+    ctx.fillRect(apple.x, apple.y, unitSize, unitSize)
+    ctx.strokeRect(apple.x, apple.y, unitSize, unitSize)
 }
 
 // Move the snake with the current velocity
 // implements movement by adding a head segment to the body and removing the tail
 // returns the tail so that it can be cleared by the canvas
-function move() {
+function move(ctx) {
     let head = {
         x: 0,
         y: 0
@@ -61,11 +70,17 @@ function move() {
 
     head.x = snake.body[0].x + velocity.x
     head.y = snake.body[0].y + velocity.y
-
     snake.body.unshift(head)
 
-
-    return snake.body.pop()
+    if (isInside(apple, head)){
+        score++
+        ctx.clearRect(apple.x -1, apple.y -1, unitSize + 2, unitSize + 2)
+        newApple()
+        drawApple(ctx)
+    } else {
+        let tail = snake.body.pop()
+        ctx.clearRect(tail.x -1 , tail.y -1 , unitSize + 2, unitSize + 2)
+    }
 }
 
 // Changes the direction of the snake, by the use of the arrow keys
@@ -78,7 +93,6 @@ function changeDirection(direction) {
     // Left
     if (direction === LEFT) {
         if (velocity.direction === RIGHT) {
-            console.log("can't move")
             return // cannot turn directly backwards
         }
 
@@ -90,7 +104,6 @@ function changeDirection(direction) {
     // Right
     if (direction === RIGHT) {
         if (velocity.direction === LEFT) {
-            console.log("can't move")
             return // cannot turn directly backwards
         }
 
@@ -102,7 +115,6 @@ function changeDirection(direction) {
     // Down
     if (direction === DOWN) {
         if (velocity.direction === UP) {
-            console.log("can't move")
             return // cannot turn directly backwards
         }
 
@@ -114,7 +126,6 @@ function changeDirection(direction) {
     // Up
     if (direction === UP) {
         if (velocity.direction === DOWN) {
-            console.log("can't move")
             return // cannot turn directly backwards
         }
 
@@ -150,13 +161,13 @@ function start() {
     });
     gaming = true
     drawSnake(ctx)
-
-    // Start running the game. The speed is dictated by the interval timeout. Less is faster game
+    drawApple(ctx, apple)
+    // Start running the game. The speed is dictated by the interval timeout. lower the interval, the faster the snake
     setInterval(function () {
         if (gaming) {
-            let tail = move(ctx)
-            clearTail(ctx, tail)
+            move(ctx)
             drawSnake(ctx)
+            updateScore()
             checkGameOver()
         }
     }, 100)
@@ -170,4 +181,43 @@ function checkGameOver() {
         gaming = false
         alert("gameover")
     }
+}
+
+// Checks if the given coordinates B is within the given coordinates A
+// uses the unitSize to create a rectangle about the coordinate a and checks if b is within it
+function isInside(a, b) {
+    // x plane collision
+    let xPlane = false
+    if (
+        (a.x >= b.x && a.x <= b.x + unitSize)
+        || (a.x + unitSize >= b.x && a.x <= b.x)
+    ) {
+        xPlane = true
+    }
+
+    // y plane collision
+    let yPlane = false
+    if (
+        (a.y >= b.y && a.y <= b.y + unitSize)
+        || (a.y + unitSize >= b.y && a.y <= b.y)
+    ) {
+        yPlane = true
+    }
+
+    return xPlane && yPlane;
+}
+
+// Creates a new apple in a random location
+// Ensures that the apple does not sit on the edges
+function newApple() {
+    apple.x = Math.floor(Math.random() * (Xmax - unitSize * 2)) + unitSize // generates random number between 10 ~ 590
+    apple.y = Math.floor(Math.random() * (Ymax - unitSize * 2)) + unitSize
+}
+
+function updateScore() {
+    console.log(score)
+}
+
+function addSegment() {
+
 }
