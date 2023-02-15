@@ -1,0 +1,56 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.cell {
+    align-items: center;
+    font-size: 4rem;
+    font-family: 'Arial';
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.row .win {
+    background-color: lightgreen;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+
+.cell:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.message {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.restart {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-family: 'Arial';
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.restart:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    text-align: center;
+    font-family: 'Arial';
+}
