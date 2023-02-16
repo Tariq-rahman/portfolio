@@ -112,6 +112,17 @@
     margin-bottom: 0.5em;
     margin-top: 0.5em;
   }
+
+  .card .info h3 a {
+    text-decoration: none;
+    color: #42446E;
+    transition: color 0.3s;
+  }
+
+  .card .info h3 a:hover {
+    color: darkmagenta;
+  }
+
   .card .info p {
     font-size: 0.9em;
     color: #777777;
@@ -199,7 +210,10 @@ margin: 30px;
 position: relative;
 }
 
-.tech img:hover {
+.tech img {
   transition: all 0.3s;
+}
+
+.tech img:hover {
   transform: translateY(-20px);
 }
