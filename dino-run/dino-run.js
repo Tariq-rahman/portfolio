@@ -1,21 +1,23 @@
+// todo make this a class and privatise variables
 var c = document.getElementById("dino-canvas");
 var ctx = c.getContext("2d");
 var running = false;
 var score = 0;
-
+var canvasHeight = 150;
+var canvasWidth = 600;
+var ground = 50;
+var jumpSpeed = 5;
 var dino = {
     x: 0,
-    y: 50,
+    y: ground,
     width: 80,
     height: 80,
+    verticalVelocity: 0,
 }
 
-
-let dinoImage = document.getElementById("dino")
+var dinoImage = document.getElementById("dino")
 
 ctx.drawImage(dinoImage,dino.x,dino.y, dino.width,dino.height)
-console.log("drawn")
-
 
 
 ////////////////////
@@ -59,11 +61,20 @@ function runGame() {
 }
 
 function moveDino() {
-
+    if (dino.verticalVelocity > 0) {
+        dino.y = dino.y - jumpSpeed;
+        dino.verticalVelocity--
+    } else if (dino.y < ground){
+        dino.y = dino.y + jumpSpeed;
+    }
 }
 
 function jump() {
-
+    // Can only jump if dino is on the ground
+    if (dino.y === ground) {
+        document.getElementById("jump-sound").play()
+        dino.verticalVelocity = 10;
+    }
 }
 
 function duck() {
@@ -101,11 +112,11 @@ function reset() {
 
 
 function clearCanvas() {
-    
+    ctx.clearRect(0 ,0, canvasWidth, canvasHeight)
 }
 
 function drawDino() {
-    
+    ctx.drawImage(dinoImage,dino.x,dino.y, dino.width,dino.height)
 }
 
 function drawCacti() {
