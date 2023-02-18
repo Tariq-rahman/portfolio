@@ -6,18 +6,18 @@ var score = 0;
 var canvasHeight = 150;
 var canvasWidth = 600;
 var ground = 50;
-var jumpSpeed = 5;
 var dino = {
     x: 0,
     y: ground,
     width: 80,
     height: 80,
+    // Vertical velocity is the number ticks the dino will travel vertically before it starts to come down
     verticalVelocity: 0,
+    // jumpSpeed is the number of pixels the dino will vertically travel per game tick
+    jumpSpeed: 5,
 }
 
 var dinoImage = document.getElementById("dino")
-
-ctx.drawImage(dinoImage,dino.x,dino.y, dino.width,dino.height)
 
 
 ////////////////////
@@ -62,10 +62,10 @@ function runGame() {
 
 function moveDino() {
     if (dino.verticalVelocity > 0) {
-        dino.y = dino.y - jumpSpeed;
+        dino.y = dino.y - dino.jumpSpeed;
         dino.verticalVelocity--
     } else if (dino.y < ground){
-        dino.y = dino.y + jumpSpeed;
+        dino.y = dino.y + dino.jumpSpeed;
     }
 }
 
@@ -73,6 +73,7 @@ function jump() {
     // Can only jump if dino is on the ground
     if (dino.y === ground) {
         document.getElementById("jump-sound").play()
+        // The vertical velocity
         dino.verticalVelocity = 10;
     }
 }
