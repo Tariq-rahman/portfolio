@@ -5,20 +5,52 @@ var running = false;
 var score = 0;
 var canvasHeight = 150;
 var canvasWidth = 600;
-var ground = 50;
+var ground = 80;
 var dino = {
     x: 0,
     y: ground,
-    width: 80,
-    height: 80,
+    width: 40,
+    height: 50,
     // Vertical velocity is the number ticks the dino will travel vertically before it starts to come down
     verticalVelocity: 0,
     // jumpSpeed is the number of pixels the dino will vertically travel per game tick
-    jumpSpeed: 5,
+    jumpSpeed: 10,
+    frame: 0
 }
 
-var dinoImage = document.getElementById("dino")
+var spriteDefinition = {
+    CACTUS_LARGE: { x: 332, y: 2, width: 0, height: 0},
+    CACTUS_SMALL: { x: 228, y: 2, width: 0, height: 0 },
+    CLOUD: { x: 86, y: 2, width: 0, height: 0 },
+    HORIZON: { x: 2, y: 54, width: 600, height: 0 },
+    MOON: { x: 484, y: 2, width: 0, height: 0 },
+    PTERODACTYL: { x: 134, y: 2, width: 0, height: 0 },
+    RESTART: { x: 2, y: 2, width: 0, height: 0 },
+    TEXT_SPRITE: { x: 655, y: 2, width: 0, height: 0 },
+    DINO: { x: 1678, y: 2, width: 85, height: 100 },
+    DINO_RUNNING: [
+        { x: 1851, y: 2, width: 88, height: 100 },
+        { x: 1938, y: 2, width: 88, height: 100 }
+        ],
+    DINO_DUCKING_1: {x: 0, y: 0, width: 0, height: 0},
+    DINO_DUCKING_2: {x: 0, y: 0, width: 0, height: 0},
+    DINO_DEAD:  {x: 0, y: 0, width: 0, height: 0},
+    STAR: { x: 645, y: 2, width: 0, height: 0 }
+}
 
+var SPRITE_MAP = document.getElementById("sprite-map")
+
+ctx.drawImage(
+    SPRITE_MAP,
+    spriteDefinition.DINO.x,
+    spriteDefinition.DINO.y,
+    spriteDefinition.DINO.width,
+    spriteDefinition.DINO.height,
+    dino.x,
+    dino.y,
+    dino.width,
+    dino.height
+);
 
 ////////////////////
 // Game functions //
@@ -28,7 +60,7 @@ var dinoImage = document.getElementById("dino")
 function runGame() {
     // will complete tick every 16 milliseconds which translates to 60 fps
     // 16 * 60 = 960 ms
-    let gameSpeed = 16
+    let gameSpeed = 50
 
     // set up listeners
     document.addEventListener("keydown", (event) => {
@@ -74,7 +106,7 @@ function jump() {
     if (dino.y === ground) {
         document.getElementById("jump-sound").play()
         // The vertical velocity
-        dino.verticalVelocity = 10;
+        dino.verticalVelocity = 5;
     }
 }
 
@@ -84,6 +116,14 @@ function duck() {
 
 function isCollided() {
 
+}
+
+function toggleDinoFrame() {
+    if (dino.frame === 0) {
+        dino.frame = 1;
+    } else {
+        dino.frame = 0;
+    }
 }
 
 
@@ -117,7 +157,33 @@ function clearCanvas() {
 }
 
 function drawDino() {
-    ctx.drawImage(dinoImage,dino.x,dino.y, dino.width,dino.height)
+   if (dino.y === ground) {
+       ctx.drawImage(
+           SPRITE_MAP,
+           spriteDefinition.DINO_RUNNING[dino.frame].x,
+           spriteDefinition.DINO_RUNNING[dino.frame].y,
+           spriteDefinition.DINO_RUNNING[dino.frame].width,
+           spriteDefinition.DINO_RUNNING[dino.frame].height,
+           dino.x,
+           dino.y,
+           dino.width,
+           dino.height
+       );
+
+       toggleDinoFrame()
+   } else {
+       ctx.drawImage(
+           SPRITE_MAP,
+           spriteDefinition.DINO.x,
+           spriteDefinition.DINO.y,
+           spriteDefinition.DINO.width,
+           spriteDefinition.DINO.height,
+           dino.x,
+           dino.y,
+           dino.width,
+           dino.height
+       );
+   }
 }
 
 function drawCacti() {
