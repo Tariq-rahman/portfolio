@@ -137,7 +137,7 @@ function changeDirection(direction) {
 }
 
 // Start the game
-function start() {
+function runGame() {
     document.addEventListener("keydown", (event) => {
         switch (event.key) {
             case "ArrowRight":
@@ -158,7 +158,6 @@ function start() {
                 break;
         }
     });
-    gaming = true
     drawSnake(ctx)
     drawApple(ctx, apple)
     // Start running the game. The speed is dictated by the interval timeout. lower the interval, the faster the snake
@@ -170,6 +169,13 @@ function start() {
             checkGameOver()
         }
     }, 100)
+}
+
+function start() {
+    if (!gaming) {
+        gaming = true;
+        runGame()
+    }
 }
 
 // Checks if the game is over by comparing the head of the snake to the max coordinates
