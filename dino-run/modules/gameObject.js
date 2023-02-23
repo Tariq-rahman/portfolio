@@ -3,6 +3,7 @@ export default class GameObject {
     activeSprite;
     animationSprites = [];
     animationFrame = 0;
+    animation = false;
     canvas;
     x;
     y;
@@ -10,7 +11,6 @@ export default class GameObject {
     height;
     canCollide;
     velocity;
-
 
     constructor(canvas, x, y, width, height, collision) {
         this.canvas = canvas
@@ -23,39 +23,14 @@ export default class GameObject {
             x: 0,
             y: 0,
         }
-        this.activeSprite = { x: 0, y: 0, width: 0, height: 0} // will be overridden by subclass
     }
 
-    setAnimationSprite(sprite) {
-        if (this.validateSprite(sprite)) {
-            this.animationSprites.push(sprite)
-        }
+    setAnimationSprites(animSprites) {
+        this.animationSprites = animSprites;
     }
 
-    validateSprite(sprite) {
-        if (!sprite.hasOwnProperty("x")) {
-            throw("Sprite is missing x property")
-        }
-
-        if (!sprite.hasOwnProperty("y")) {
-            throw("Sprite is missing y property")
-        }
-
-        if ( !sprite.hasOwnProperty("width")) {
-            throw("Sprite is missing width property!")
-        }
-
-        if (!sprite.hasOwnProperty("height")) {
-            throw("Sprite is missing width property!")
-        }
-
-        return true;
-    }
-
-    setSprite(sprite) {
-        if (this.validateSprite(sprite)) {
-            this.activeSprite = sprite
-        }
+    setActiveSprite(sprite) {
+        this.activeSprite = sprite
     }
 
     isCollided(gameObject) {
@@ -96,7 +71,11 @@ export default class GameObject {
     }
 
     animate() {
-        this.setSprite(this.animationSprites[this.animationFrame])
+        if (this.animationSprites.length === 0 || !this.animation) {
+            return
+        }
+
+        this.setActiveSprite(this.animationSprites[this.animationFrame])
         this.animationFrame++;
 
         if (this.animationFrame > (this.animationSprites.length -1)) {

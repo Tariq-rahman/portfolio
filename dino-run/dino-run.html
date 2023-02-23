@@ -14,18 +14,30 @@
 
     </canvas>
     <div class="buttons">
-        <button onclick="start()" class="start-button">
+        <button id="start" class="start-button">
             Start Game
         </button>
         <button onclick="pause()" class="pause-button">
             Pause Game
         </button>
-        <button onclick="reset()" class="reset-button">
+        <button id="reset" class="reset-button">
             Reset Game
         </button>
     </div>
     <div class="images">
         <img src="../images/dino/200-offline-sprite.png" id="sprite-map" alt="sprite-map"/>
+        <img src="../images/dino/dino-duck-1.png" id="dino-duck-1" alt="sprite-map"/>
+        <img src="../images/dino/dino-duck-2.png" id="dino-duck-2" alt="sprite-map"/>
+        <img src="../images/dino/dino-run-1.png" id="dino-run-1" alt="sprite-map"/>
+        <img src="../images/dino/dino-run-2.png" id="dino-run-2" alt="sprite-map"/>
+        <img src="../images/dino/cactus-1.png" id="cactus-1" alt="sprite-map"/>
+        <img src="../images/dino/big-cactus-1.png" id="big-cactus-1" alt="sprite-map"/>
+        <img src="../images/dino/cloud.png" id="cloud" alt="sprite-map"/>
+        <img src="../images/dino/bird-flying-1.png" id="bird-1" alt="sprite-map"/>
+        <img src="../images/dino/bird-flying-2.png" id="bird-2" alt="sprite-map"/>
+        <img src="../images/dino/game-over.png" id="game-over" alt="sprite-map"/>
+        <img src="../images/dino/restart.png" id="restart" alt="sprite-map"/>
+        <img src="../images/dino/background.png" id="background" alt="sprite-map"/>
     </div>
     <div class="sounds">
         <audio id="die-sound">
@@ -38,6 +50,6 @@
             <source src="../sounds/dino-run/point.wav">
         </audio>
     </div>
+    <script type="module" src="main.js"></script>
 </body>
-<script type="module" src="main.js"></script>
 </html>

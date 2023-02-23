@@ -1,13 +1,24 @@
 import GameObject from "./gameObject.js";
 
-export default class Dino extends GameObject{
-    jumpSpeed= 10;
-    frame=  0;
-    constructor(canvas) {
-        super(canvas, 0,  80, 40, 50, true);
+export default class Dino extends GameObject {
 
-        // consider retrieving the sprite config from separate file
-        this.setSprite(1678, 2, 85, 100);
+    runningSprites = [];
+    duckingRunningSprites = [];
+
+    constructor(canvas) {
+        super(canvas, 10,  80, 40, 50, true);
+
+        this.setActiveSprite(document.getElementById("dino-run-1"));
+
+        this.runningSprites.push(document.getElementById("dino-run-1"))
+        this.runningSprites.push(document.getElementById("dino-run-2"))
+
+        this.duckingRunningSprites.push(document.getElementById("dino-duck-1"))
+        this.duckingRunningSprites.push(document.getElementById("dino-duck-2"))
+
+        this.setAnimationSprites(this.runningSprites)
+
+        this.animation = true;
 
         // set up listeners
         document.addEventListener("keydown", (event) => {
@@ -26,50 +37,60 @@ export default class Dino extends GameObject{
                     break;
             }
         });
+
+
+        document.addEventListener("keyup", (event) => {
+            switch (event.key) {
+                case "ArrowDown":
+                    this.unDuck()
+                    break;
+            }
+        })
     }
 
 
     move() {
-        if (dino.verticalVelocity > 0) {
-            dino.y = dino.y - dino.jumpSpeed;
-            dino.verticalVelocity--
-        } else if (dino.y < ground){
-            dino.y = dino.y + dino.jumpSpeed;
+        super.move();
+
+        if (this.y < 20) {
+           this.setVelocity(0, +15)
         }
+
+        if (this.y === 80 && this.velocity.y !== 0) {
+           this.setVelocity(0, 0)
+            this.animation = true;
+       }
     }
 
 
     jump() {
-        // Can only jump if dino is on the ground
-        if (dino.y === ground) {
+        // Can only jump if dino is on the ground. 80 is ground
+        if (this.y === 80) {
+            this.animation = false;
             document.getElementById("jump-sound").play()
             // The vertical velocity
-            dino.verticalVelocity = 5;
+            this.setVelocity(0, -15);
         }
     }
 
-
     duck() {
+        // can only duck on ground
+        if (this.y === 80) {
+            this.setAnimationSprites(this.duckingRunningSprites)
+            // set height
+            this.width = 60;
+            this.height = 40;
+            this.y = 90;
+        }
+    }
 
+    unDuck() {
+        if (this.y === 90) {
+            this.setAnimationSprites(this.runningSprites)
+            // set height
+            this.width = 40;
+            this.height = 50;
+            this.y = 80;
+        }
     }
 }
-
-// var spriteDefinition = {
-//     CACTUS_LARGE: { x: 332, y: 2, width: 0, height: 0},
-//     CACTUS_SMALL: { x: 228, y: 2, width: 0, height: 0 },
-//     CLOUD: { x: 86, y: 2, width: 0, height: 0 },
-//     HORIZON: { x: 2, y: 54, width: 600, height: 0 },
-//     MOON: { x: 484, y: 2, width: 0, height: 0 },
-//     PTERODACTYL: { x: 134, y: 2, width: 0, height: 0 },
-//     RESTART: { x: 2, y: 2, width: 0, height: 0 },
-//     TEXT_SPRITE: { x: 655, y: 2, width: 0, height: 0 },
-//     DINO: { x: 1678, y: 2, width: 85, height: 100 },
-//     DINO_RUNNING: [
-//         { x: 1851, y: 2, width: 88, height: 100 },
-//         { x: 1938, y: 2, width: 88, height: 100 }
-//         ],
-//     DINO_DUCKING_1: {x: 0, y: 0, width: 0, height: 0},
-//     DINO_DUCKING_2: {x: 0, y: 0, width: 0, height: 0},
-//     DINO_DEAD:  {x: 0, y: 0, width: 0, height: 0},
-//     STAR: { x: 645, y: 2, width: 0, height: 0 }
-// }
