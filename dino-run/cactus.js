@@ -1,9 +1,9 @@
 import GameObject from "./gameObject";
 
-export default class Cloud extends GameObject{
+export default class Cactus extends GameObject{
     constructor(canvas) {
-        // spawn cloud off canvas
-        super(canvas, canvas.canvasWidth,  50, 50, 50, false);
+        // spawn off canvas
+        super(canvas, canvas.canvasWidth,  10, 50, 50, true);
 
         // consider retrieving the sprite config from separate file
         this.setSprite(86, 2, 50, 50);

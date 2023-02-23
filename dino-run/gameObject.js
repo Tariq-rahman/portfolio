@@ -1,18 +1,65 @@
 export default class GameObject {
-    constructor(x, y, width, height, collision) {
+    // Fields
+    activeSprite;
+    animationSprites = [];
+    animationFrame = 0;
+    canvas;
+    x;
+    y;
+    width;
+    height;
+    canCollide;
+    velocity;
+
+
+    constructor(canvas, x, y, width, height, collision) {
+        this.canvas = canvas
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.collision = collision
+        this.canCollide = collision
         this.velocity = {
             x: 0,
             y: 0,
         }
+        this.activeSprite = { x: 0, y: 0, width: 0, height: 0} // will be overridden by subclass
+    }
+
+    setAnimationSprite(sprite) {
+        if (this.validateSprite(sprite)) {
+            this.animationSprites.push(sprite)
+        }
+    }
+
+    validateSprite(sprite) {
+        if (!sprite.hasOwnProperty("x")) {
+            throw("Sprite is missing x property")
+        }
+
+        if (!sprite.hasOwnProperty("y")) {
+            throw("Sprite is missing y property")
+        }
+
+        if ( !sprite.hasOwnProperty("width")) {
+            throw("Sprite is missing width property!")
+        }
+
+        if (!sprite.hasOwnProperty("height")) {
+            throw("Sprite is missing width property!")
+        }
+
+        return true;
+    }
+
+    setSprite(sprite) {
+        if (this.validateSprite(sprite)) {
+            this.activeSprite = sprite
+        }
     }
 
     isCollided(gameObject) {
-        if (this.collision === false) {
+        if (this.canCollide === false) {
             return false;
         }
 
@@ -45,10 +92,20 @@ export default class GameObject {
     move() {
         this.x += this.velocity.x;
         this.y += this.velocity.y;
+        this.animate();
     }
 
-    setPosition(x, y) {
-        this.x = x;
-        this.y = y;
+    animate() {
+        this.setSprite(this.animationSprites[this.animationFrame])
+        this.animationFrame++;
+
+        if (this.animationFrame > (this.animationSprites.length -1)) {
+            this.animationFrame = 0;
+        }
+    }
+    
+    // draw self on the canvas
+    draw() {
+        this.canvas.quickDraw(this.activeSprite, this)
     }
 }

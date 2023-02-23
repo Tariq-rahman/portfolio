@@ -1,29 +1,27 @@
 import GameObject from "./gameObject";
 
-export default class Bird {
+export default class Background extends GameObject{
+    spriteX;
+    maxSpriteWidth = 600; // todo move this elsewhere
+
     constructor(canvas) {
-        this.canvas = canvas
-        // spawn off canvas
-        this.gameObject = new GameObject(this.canvas.canvasWidth,  20, 50, 50, true)
+        super(canvas, 0,  20, 0, 0, true);
 
         // consider retrieving the sprite config from separate file
-        this.sprite = { x: 86, y: 2, width: 0, height: 0}
-
-        // Set velocity to move left
-        this.gameObject.setVelocity(-5,0)
+        this.spriteX = 0;
+        this.setSprite(this.spriteX, 100, this.canvas.canvasWidth, 50)
     }
 
-    // draw self on the canvas
-    draw() {
-        this.canvas.quickDraw(this.sprite, this.gameObject)
-    }
-
-    // move position leftwards to implement movement
+    // Override move as we don't want the background to move
+    // rather we want to move where we source the image from
     move() {
-        this.gameObject.move();
-    }
+        this.spriteX += 5;
 
-    checkCollision(obj) {
-        this.gameObject.isCollided(obj)
+        if (this.spriteX > this.maxSpriteWidth) {
+            this.spriteX = 0;
+        }
+
+        this.setSprite(this.spriteX, this.activeSprite.y, this.activeSprite.w, this.activeSprite.h)
+
     }
 }

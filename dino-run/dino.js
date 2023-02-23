@@ -1,38 +1,51 @@
 import { createSpriteDefinition, DinoCanvas } from "./dino-canvas";
 
+import GameObject from "./gameObject";
+
+export default class Dino extends GameObject{
+    jumpSpeed= 10;
+    frame=  0;
+    constructor(canvas) {
+        super(canvas, 0,  80, 40, 50, true);
+
+        // consider retrieving the sprite config from separate file
+        this.setSprite(1678, 2, 85, 100);
+    }
 
 
-export default class Dino {
-    constructor() {
-        this.spriteDefinition = createSpriteDefinition()
-        this.canvas = new DinoCanvas()
-        this.running = false;
-        this.score = 0;
-        this.dino = {
-            x: 0,
-            y: ground,
-            width: 40,
-            height: 50,
-            // Vertical velocity is the number ticks the dino will travel vertically before it starts to come down
-            verticalVelocity: 0,
-            // jumpSpeed is the number of pixels the dino will vertically travel per game tick
-            jumpSpeed: 10,
-            frame: 0
+    move() {
+        if (dino.verticalVelocity > 0) {
+            dino.y = dino.y - dino.jumpSpeed;
+            dino.verticalVelocity--
+        } else if (dino.y < ground){
+            dino.y = dino.y + dino.jumpSpeed;
         }
+    }
+
+
+    jump() {
+        // Can only jump if dino is on the ground
+        if (dino.y === ground) {
+            document.getElementById("jump-sound").play()
+            // The vertical velocity
+            dino.verticalVelocity = 5;
+        }
+    }
+
+
+    duck() {
 
     }
+
+    toggleDinoFrame() {
+        if (dino.frame === 0) {
+            dino.frame = 1;
+        } else {
+            dino.frame = 0;
+        }
+    }
+
 }
-
-
-var ground = 80;
-
-var background = {
-    x: 0,
-    y: ground,
-    width: canvasWidth,
-    height: ground,
-}
-
 
 var spriteDefinition = {
     CACTUS_LARGE: { x: 332, y: 2, width: 0, height: 0},
@@ -53,59 +66,3 @@ var spriteDefinition = {
     DINO_DEAD:  {x: 0, y: 0, width: 0, height: 0},
     STAR: { x: 645, y: 2, width: 0, height: 0 }
 }
-
-var SPRITE_MAP = document.getElementById("sprite-map")
-
-ctx.drawImage(
-    SPRITE_MAP,
-    spriteDefinition.DINO.x,
-    spriteDefinition.DINO.y,
-    spriteDefinition.DINO.width,
-    spriteDefinition.DINO.height,
-    dino.x,
-    dino.y,
-    dino.width,
-    dino.height
-);
-
-////////////////////
-// Game functions //
-////////////////////
-
-
-
-function moveDino() {
-    if (dino.verticalVelocity > 0) {
-        dino.y = dino.y - dino.jumpSpeed;
-        dino.verticalVelocity--
-    } else if (dino.y < ground){
-        dino.y = dino.y + dino.jumpSpeed;
-    }
-}
-
-function jump() {
-    // Can only jump if dino is on the ground
-    if (dino.y === ground) {
-        document.getElementById("jump-sound").play()
-        // The vertical velocity
-        dino.verticalVelocity = 5;
-    }
-}
-
-function duck() {
-
-}
-
-
-function toggleDinoFrame() {
-    if (dino.frame === 0) {
-        dino.frame = 1;
-    } else {
-        dino.frame = 0;
-    }
-}
-
-function draw() {
-
-}
-
