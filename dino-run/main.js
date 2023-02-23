@@ -1,35 +1,35 @@
-import Canvas from "./modules/canvas";
-import Dino from "./modules/dino"
+import Canvas from "./modules/canvas.js";
+import Dino from "./modules/dino.js"
 
-var main
-
+var game;
+var score = 0;
 var running = false;
 
 window.addEventListener("load", (event) => {
     let c = document.getElementById("dino-canvas");
-    main.ctx = c.getContext("2d");
-    main.spriteMap = document.getElementById("sprite-map")
-    main.dinoCanvas = new Canvas(ctx, main.spriteMap)
+    game.ctx = c.getContext("2d");
+    game.spriteMap = document.getElementById("sprite-map")
+    game.dinoCanvas = new Canvas(ctx, game.spriteMap)
     let dino = new Dino()
-    main.objects = [];
-    main.objects.push(dino)
+    game.objects = [];
+    game.objects.push(dino)
     dino.draw()
 });
 
 
 // Runs the next tick of the main
 function runGame() {
-    // will complete tick every 16 milliseconds which translates to 60 fps
-    // 16 * 60 = 960 ms
-    let gameSpeed = 50
+    // will complete tick every 16 milliseconds which translates to 30 fps
+    // 32 * 30 = 960 ms
+    let gameSpeed = 32
 
     // Run the main
     setInterval(function () {
         if (running){
-            main.dinoCanvas.clearCanvas()
-            for (let i =0; i < main.objects.length; i++) {
-                main.objects[i].move();
-                main.objects[i].draw();
+            game.dinoCanvas.clearCanvas()
+            for (let i =0; i < game.objects.length; i++) {
+                game.objects[i].move();
+                game.objects[i].draw();
 
             }
         }

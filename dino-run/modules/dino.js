@@ -1,4 +1,4 @@
-import GameObject from "./gameObject";
+import GameObject from "./gameObject.js";
 
 export default class Dino extends GameObject{
     jumpSpeed= 10;
