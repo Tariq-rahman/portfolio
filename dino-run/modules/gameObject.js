@@ -103,7 +103,7 @@ export default class GameObject {
             this.animationFrame = 0;
         }
     }
-    
+
     // draw self on the canvas
     draw() {
         this.canvas.quickDraw(this.activeSprite, this)
