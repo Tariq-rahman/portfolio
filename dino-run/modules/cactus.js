@@ -29,6 +29,6 @@ export default class Cactus extends GameObject{
         this.setActiveSprite(document.getElementById(this.type.name));
 
         // Set velocity to move left
-        this.setVelocity(-15,0)
+        this.setVelocity(-5,0)
     }
 }

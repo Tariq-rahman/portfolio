@@ -2,6 +2,7 @@ import Canvas from "./modules/canvas.js";
 import Dino from "./modules/dino.js"
 import Background from "./modules/background.js";
 import Cactus from "./modules/cactus.js";
+import Cloud from "./modules/cloud.js";
 
 var game = {
     ctx: null,
@@ -22,24 +23,25 @@ window.addEventListener("load", (event) => {
     game.canvas = new Canvas(game.ctx, game.spriteMap);
     let dino = new Dino(game.canvas);
     let background = new Background(game.canvas);
+    let cloud = new Cloud(game.canvas)
     let cactus = new Cactus(game.canvas, 1)
-    game.objects.push(dino, background, cactus)
+    game.objects.push(background, cloud, cactus, dino)
     dino.draw()
 });
 
 
 // Runs the next tick of the main
 function runGame() {
-    // will complete tick every 16 milliseconds which translates to 30 fps
-    // 32 * 30 = 960 ms
-    let gameSpeed = 50
+    // will complete tick every 16 milliseconds which translates to 60 fps
+    // 16 * 60 = 960 ms
+    let gameSpeed = 16
 
     // Run the main
     setInterval(function () {
         if (running){
             // Check for collisions
-            let dino = game.objects[0]
-            for (let i =1; i < game.objects.length; i++) {
+            let dino = game.objects[game.objects.length - 1]
+            for (let i =0; i < game.objects.length -1; i++) {
                 if (!game.objects[i].canCollide) {
                     continue;
                 }

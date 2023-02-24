@@ -5,7 +5,7 @@ export default class Background extends GameObject{
         super(canvas, 0,  120, 1800, 20, false);
 
         this.setActiveSprite(document.getElementById("background"))
-        this.setVelocity(-15, 0)
+        this.setVelocity(-5, 0)
     }
 
     move() {

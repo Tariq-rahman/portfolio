@@ -4,12 +4,27 @@ export default class Dino extends GameObject {
 
     runningSprites = [];
     duckingRunningSprites = [];
-    ground = 90;
-    maxJumpHeight = 20;
+
+    config = {
+        DROP_VELOCITY: -5,
+        GRAVITY: 0.6,
+        HEIGHT: 47,
+        HEIGHT_DUCK: 30,
+        INITIAL_JUMP_VELOCITY: -10,
+        INTRO_DURATION: 1500,
+        // MAX_JUMP_HEIGHT: 30,
+        // MIN_JUMP_HEIGHT: 30,
+        // SPEED_DROP_COEFFICIENT: 3,
+        // START_X_POS: 50,
+        WIDTH: 44,
+        WIDTH_DUCK: 59
+    };
 
     constructor(canvas) {
-        super(canvas, 10,  0, 40, 50, true);
-        this.y = this.ground;
+        super(canvas, 0,  0, 0, 0, true);
+        this.height = this.config.HEIGHT;
+        this.width = this.config.WIDTH;
+        this.y = this.ground();
 
         this.setActiveSprite(document.getElementById("dino-run-1"));
 
@@ -51,49 +66,53 @@ export default class Dino extends GameObject {
         })
     }
 
-
     move() {
         super.move();
 
-        if (this.y < this.maxJumpHeight) {
-           this.setVelocity(0, +15)
+        if (this.y < this.ground()) {
+            this.setVelocity(0, this.velocity.y + this.config.GRAVITY)
         }
 
-        if (this.y === this.ground && this.velocity.y !== 0) {
-           this.setVelocity(0, 0)
+        if (this.y >= this.ground() && this.velocity.y !== 0) {
+            this.setVelocity(0, 0);
             this.animation = true;
+            this.y = this.ground()
        }
     }
 
 
     jump() {
         // Can only jump if dino is on the ground. 80 is ground
-        if (this.y === this.ground) {
+        if (this.y === this.ground()) {
             this.animation = false;
             document.getElementById("jump-sound").play()
             // The vertical velocity
-            this.setVelocity(0, -15);
+            this.setVelocity(0, this.config.INITIAL_JUMP_VELOCITY);
         }
     }
 
     duck() {
         // can only duck on ground
-        if (this.y === this.ground) {
+        if (this.y === this.ground()) {
             this.setAnimationSprites(this.duckingRunningSprites)
             // set height
-            this.width = 60;
-            this.height = 40;
-            this.y = 90;
+            this.width = this.config.WIDTH_DUCK;
+            this.height = this.config.HEIGHT_DUCK;
+            this.y = 140 - this.config.HEIGHT_DUCK
+            this.animateNow()
         }
     }
 
     unDuck() {
-        if (this.y === this.ground) {
-            this.setAnimationSprites(this.runningSprites)
-            // set height
-            this.width = 40;
-            this.height = 50;
-            this.y = this.ground;
-        }
+        this.setAnimationSprites(this.runningSprites)
+        // set height
+        this.width = this.config.WIDTH;
+        this.height = this.config.HEIGHT;
+        this.y = this.ground();
+        this.animateNow()
+    }
+
+    ground() {
+        return 140 - this.config.HEIGHT
     }
 }

@@ -4,6 +4,8 @@ export default class GameObject {
     animationSprites = [];
     animationFrame = 0;
     animation = false;
+    animationDelay = 0;
+    FPS = 60;
     canvas;
     x;
     y;
@@ -71,10 +73,24 @@ export default class GameObject {
     }
 
     animate() {
+        // Check if object can perform animation
         if (this.animationSprites.length === 0 || !this.animation) {
             return
         }
 
+        // Check we are still waiting for last animation to finish
+        if (this.animationDelay > 0) {
+            this.animationDelay--
+            return
+        }
+
+        this.animateNow()
+
+        this.animationDelay = this.FPS / (this.animationSprites.length + 10);
+    }
+
+    animateNow() {
+        // Perform the animation
         this.setActiveSprite(this.animationSprites[this.animationFrame])
         this.animationFrame++;
 
