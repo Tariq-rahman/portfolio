@@ -2,7 +2,7 @@ import GameObject from "./gameObject.js";
 
 export default class Background extends GameObject{
     constructor(canvas) {
-        super(canvas, 0,  120, 1800, 20, true);
+        super(canvas, 0,  120, 1800, 20, false);
 
         this.setActiveSprite(document.getElementById("background"))
         this.setVelocity(-15, 0)

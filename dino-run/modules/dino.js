@@ -4,9 +4,12 @@ export default class Dino extends GameObject {
 
     runningSprites = [];
     duckingRunningSprites = [];
+    ground = 90;
+    maxJumpHeight = 20;
 
     constructor(canvas) {
-        super(canvas, 10,  80, 40, 50, true);
+        super(canvas, 10,  0, 40, 50, true);
+        this.y = this.ground;
 
         this.setActiveSprite(document.getElementById("dino-run-1"));
 
@@ -52,11 +55,11 @@ export default class Dino extends GameObject {
     move() {
         super.move();
 
-        if (this.y < 20) {
+        if (this.y < this.maxJumpHeight) {
            this.setVelocity(0, +15)
         }
 
-        if (this.y === 80 && this.velocity.y !== 0) {
+        if (this.y === this.ground && this.velocity.y !== 0) {
            this.setVelocity(0, 0)
             this.animation = true;
        }
@@ -65,7 +68,7 @@ export default class Dino extends GameObject {
 
     jump() {
         // Can only jump if dino is on the ground. 80 is ground
-        if (this.y === 80) {
+        if (this.y === this.ground) {
             this.animation = false;
             document.getElementById("jump-sound").play()
             // The vertical velocity
@@ -75,7 +78,7 @@ export default class Dino extends GameObject {
 
     duck() {
         // can only duck on ground
-        if (this.y === 80) {
+        if (this.y === this.ground) {
             this.setAnimationSprites(this.duckingRunningSprites)
             // set height
             this.width = 60;
@@ -85,12 +88,12 @@ export default class Dino extends GameObject {
     }
 
     unDuck() {
-        if (this.y === 90) {
+        if (this.y === this.ground) {
             this.setAnimationSprites(this.runningSprites)
             // set height
             this.width = 40;
             this.height = 50;
-            this.y = 80;
+            this.y = this.ground;
         }
     }
 }

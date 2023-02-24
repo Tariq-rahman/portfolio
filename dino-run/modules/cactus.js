@@ -19,7 +19,7 @@ export default class Cactus extends GameObject{
 
     constructor(canvas, typeID) {
         // spawn off canvas
-        super(canvas, canvas.canvasWidth,  120, 0, 0, true);
+        super(canvas, canvas.canvasWidth,  100, 0, 0, true);
 
         this.type = this.typeMap[typeID];
         this.width = this.type.width;
@@ -29,6 +29,6 @@ export default class Cactus extends GameObject{
         this.setActiveSprite(document.getElementById(this.type.name));
 
         // Set velocity to move left
-        this.setVelocity(-5,0)
+        this.setVelocity(-15,0)
     }
 }

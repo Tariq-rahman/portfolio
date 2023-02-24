@@ -41,8 +41,8 @@ export default class GameObject {
         // x plane collision
         let xPlane = false
         if (
-            (this.x >= gameObject.x && this.x <= gameObject.x + unitSize)
-            || (this.x + unitSize >= gameObject.x && this.x <= gameObject.x)
+            (this.x >= gameObject.x && this.x < gameObject.x + gameObject.width)
+            || (this.x + this.width > gameObject.x && this.x < gameObject.x)
         ) {
             xPlane = true
         }
@@ -50,8 +50,8 @@ export default class GameObject {
         // y plane collision
         let yPlane = false
         if (
-            (this.y >= gameObject.y && this.y <= gameObject.y + unitSize)
-            || (this.y + unitSize >= gameObject.y && this.y <= gameObject.y)
+            (this.y >= gameObject.y && this.y < gameObject.y + gameObject.height)
+            || (this.y + this.height > gameObject.y && this.y < gameObject.y)
         ) {
             yPlane = true
         }

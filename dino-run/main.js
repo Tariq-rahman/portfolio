@@ -1,6 +1,7 @@
 import Canvas from "./modules/canvas.js";
 import Dino from "./modules/dino.js"
 import Background from "./modules/background.js";
+import Cactus from "./modules/cactus.js";
 
 var game = {
     ctx: null,
@@ -21,7 +22,8 @@ window.addEventListener("load", (event) => {
     game.canvas = new Canvas(game.ctx, game.spriteMap);
     let dino = new Dino(game.canvas);
     let background = new Background(game.canvas);
-    game.objects.push(dino, background)
+    let cactus = new Cactus(game.canvas, 1)
+    game.objects.push(dino, background, cactus)
     dino.draw()
 });
 
@@ -30,16 +32,38 @@ window.addEventListener("load", (event) => {
 function runGame() {
     // will complete tick every 16 milliseconds which translates to 30 fps
     // 32 * 30 = 960 ms
-    let gameSpeed = 80
+    let gameSpeed = 50
 
     // Run the main
     setInterval(function () {
         if (running){
+            // Check for collisions
+            let dino = game.objects[0]
+            for (let i =1; i < game.objects.length; i++) {
+                if (!game.objects[i].canCollide) {
+                    continue;
+                }
+
+                if (dino.isCollided(game.objects[i])) {
+                    endGame()
+                }
+            }
+
             game.canvas.clearCanvas()
+
+            // move and draw all objects
             for (let i =0; i < game.objects.length; i++) {
                 game.objects[i].move();
                 game.objects[i].draw();
 
+                // Remove enemy objects that have gone off-screen
+                if (game.objects[i].canCollide === true && game.objects[i].x < 0) {
+                    // Re-spawn new enemy
+                    // todo make enemy random
+                    let cactus = new Cactus(game.canvas, 1)
+                    game.objects.splice(i, 1, cactus)
+
+                }
             }
         }
     }, gameSpeed)
@@ -63,4 +87,9 @@ function start() {
 function reset() {
     running = false;
     score = 0;
+}
+
+function endGame() {
+    running = false;
+    alert("you dead!")
 }
