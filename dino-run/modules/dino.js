@@ -2,11 +2,12 @@ import GameObject from "./gameObject.js";
 
 export default class Dino extends GameObject {
 
+    // Sprites
     runningSprites = [];
     duckingRunningSprites = [];
     deadSprite;
 
-    //Sounds
+    // Sounds
     jumpSound;
     dieSound;
 

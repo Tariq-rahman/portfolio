@@ -5,6 +5,24 @@ import Cactus from "./modules/cactus.js";
 import Cloud from "./modules/cloud.js";
 import Bird from "./modules/bird.js";
 import Score from "./modules/score.js";
+import GameObject from "./modules/gameObject.js";
+
+var config = {
+    gameOver: {
+        x: 205,
+        y: 40,
+        width: 190.5,
+        height: 10.5,
+        collision: false,
+    },
+    restart: {
+        x: 282,
+        y: 65,
+        width: 36,
+        height: 32,
+        collision: false,
+    }
+}
 
 var game = {
     ctx: null,
@@ -51,7 +69,11 @@ function update() {
         if (dino.isCollided(game.objects[i])) {
             dino.die()
             endGame()
+            break;
         }
+    }
+    if (!gameStarted) {
+        return
     }
 
     game.canvas.clearCanvas()
@@ -100,4 +122,12 @@ function endGame() {
     gameStarted = false;
     // clear the interval function
     clearInterval(intervalID)
+
+    let gameOver = new GameObject(game.canvas,config.gameOver.x, config.gameOver.y, config.gameOver.width, config.gameOver.height, config.gameOver.collision)
+    let restart = new GameObject(game.canvas,config.restart.x, config.restart.y, config.restart.width, config.restart.height, config.restart.collision)
+    gameOver.setActiveSprite(document.getElementById("game-over"))
+    restart.setActiveSprite(document.getElementById("restart"))
+
+    gameOver.draw()
+    restart.draw()
 }
