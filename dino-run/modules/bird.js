@@ -4,7 +4,7 @@ export default class Bird extends GameObject{
     flyingSprites = [];
     constructor(canvas) {
         // spawn off canvas
-        super(canvas, canvas.canvasWidth,  20, 50, 50, true);
+        super(canvas, canvas.canvasWidth,  20, 46, 40, true);
 
         this.flyingSprites.push(document.getElementById("bird-1"))
         this.flyingSprites.push(document.getElementById("bird-2"))
@@ -13,6 +13,7 @@ export default class Bird extends GameObject{
         this.animation = true;
 
         // Set velocity to move left
-        this.setVelocity(-10,0)
+        this.setVelocity(-5,0)
+        this.animationDelayCoefficient = 4;
     }
 }

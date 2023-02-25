@@ -36,18 +36,13 @@ var intervalID;
 document.getElementById("start").addEventListener("click", start)
 
 window.addEventListener("load", (event) => {
-    setup()
-});
-
-function setup() {
     let c = document.getElementById("dino-canvas");
     game.ctx = c.getContext("2d");
     game.canvas = new Canvas(game.ctx);
 
     let dino = new Dino(game.canvas);
     dino.draw()
-}
-
+});
 
 // Runs the next tick of the main
 function runGame() {
@@ -72,10 +67,6 @@ function update() {
             break;
         }
     }
-    if (!gameStarted) {
-        return
-    }
-
     game.canvas.clearCanvas()
 
     // move and draw all objects
@@ -84,10 +75,19 @@ function update() {
 
         // Remove enemy objects that have gone off-screen
         if (game.objects[i].canCollide === true && game.objects[i].x < 0) {
-            // Re-spawn new enemy
+            let enemyClass = game.objects[i].constructor.name
+
+            let enemy;
+            if (enemyClass.toString() === "Cactus") {
+                enemy = new Cactus(game.canvas, 1)
+            }
+
+            if (enemyClass.toString() === "Bird") {
+                enemy = new Bird(game.canvas)
+            }
+
             // todo make enemy random
-            let cactus = new Cactus(game.canvas, 1)
-            game.objects.splice(i, 1, cactus)
+            game.objects.splice(i, 1, enemy)
 
         }
     }
@@ -113,7 +113,7 @@ function start() {
     let score = new Score(game.canvas)
 
     // Dino and cactus always last. So, they are drawn on top of background
-    game.objects.push(background, cloud, score, cactus, bird, dino)
+    game.objects.push(background, cloud, score, bird, cactus, dino)
 
     runGame()
 }

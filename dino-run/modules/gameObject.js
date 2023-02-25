@@ -5,6 +5,7 @@ export default class GameObject {
     animationFrame = 0;
     animation = false;
     animationDelay = 0;
+    animationDelayCoefficient = 10;
     FPS = 60;
     canvas;
     x;
@@ -94,7 +95,7 @@ export default class GameObject {
 
         this.animateNow()
 
-        this.animationDelay = this.FPS / (this.animationSprites.length + 10);
+        this.animationDelay = this.FPS / (this.animationSprites.length + this.animationDelayCoefficient);
     }
 
     // animateNow() will instantly switch to the next animation frame

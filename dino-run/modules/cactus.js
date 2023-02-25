@@ -18,11 +18,12 @@ export default class Cactus extends GameObject{
 
     constructor(canvas, typeID) {
         // spawn off canvas
-        super(canvas, canvas.canvasWidth,  100, 0, 0, true);
+        super(canvas, canvas.canvasWidth,  0, 0, 0, true);
 
         this.type = this.typeMap[typeID];
         this.width = this.type.width;
         this.height = this.type.height;
+        this.y = 145 - this.height;
 
         // consider retrieving the sprite config from separate file
         this.setActiveSprite(document.getElementById(this.type.name));

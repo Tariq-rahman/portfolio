@@ -3,6 +3,7 @@ import GameObject from "./gameObject.js";
 export default class Score extends GameObject{
 
     floatScore = 0;
+    gap = 1.5;
     score = 0;
     maxDigits = 5;
     scoreSound;
@@ -11,7 +12,7 @@ export default class Score extends GameObject{
 
     constructor(canvas) {
         // Spawn in top right corner
-        super(canvas, 550,  10, 9, 10.5, false);
+        super(canvas, 540,  10, 9, 10.5, false);
 
         this.scoreSound = document.getElementById("point-sound")
 
@@ -36,7 +37,7 @@ export default class Score extends GameObject{
 
     draw() {
         for (let i = 0; i < this.scoreDisplay.length; i++) {
-            this.canvas.draw(this.scoreDisplay[i], this.x + (i * this.width), this.y, this.width, this.height)
+            this.canvas.draw(this.scoreDisplay[i], this.x + (i * (this.width + this.gap)), this.y, this.width, this.height)
         }
     }
 

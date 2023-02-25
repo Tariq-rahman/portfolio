@@ -123,12 +123,15 @@ export default class Dino extends GameObject {
     }
 
     ground() {
-        return 140 - this.config.HEIGHT
+        return 150 - this.config.HEIGHT
     }
 
     die() {
+        if (this.height === this.config.HEIGHT_DUCK) {
+            this.stand()
+        }
         this.setActiveSprite(this.deadSprite)
-        this.draw()
+        this.animation = false;
         this.dieSound.play()
     }
 }
