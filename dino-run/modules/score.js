@@ -5,12 +5,15 @@ export default class Score extends GameObject{
     floatScore = 0;
     score = 0;
     maxDigits = 5;
+    scoreSound;
     scoreDisplay = []; // max 5 digits
     scoreSprites = [];
 
     constructor(canvas) {
         // spawn cloud off canvas
-        super(canvas, 500,  10, 18, 21, false);
+        super(canvas, 550,  10, 9, 10.5, false);
+
+        this.scoreSound = document.getElementById("point-sound")
 
         // get all sprites
         this.scoreSprites.push(document.getElementById('0'))
@@ -60,6 +63,14 @@ export default class Score extends GameObject{
     incrementScore() {
         this.floatScore += 0.1;
         this.score = Math.floor(this.floatScore);
+        if (this.score % 100 === 0 && this.score !== 0) {
+            this.scoreSound.play()
+            this.blinkAnimation()
+        }
+    }
+
+    blinkAnimation() {
+
     }
 
     update() {
