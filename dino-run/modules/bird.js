@@ -4,7 +4,7 @@ export default class Bird extends GameObject{
     flyingSprites = [];
     constructor(canvas) {
         // spawn off canvas
-        super(canvas, canvas.canvasWidth,  20, 46, 40, true);
+        super(canvas, canvas.canvasWidth + 300,  20, 46, 40, true);
 
         this.flyingSprites.push(document.getElementById("bird-1"))
         this.flyingSprites.push(document.getElementById("bird-2"))

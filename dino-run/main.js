@@ -91,6 +91,10 @@ function update() {
 
         }
     }
+
+    if (!gameStarted) {
+        drawGameOverScreen()
+    }
 }
 
 ///////////////////////
@@ -122,7 +126,9 @@ function endGame() {
     gameStarted = false;
     // clear the interval function
     clearInterval(intervalID)
+}
 
+function drawGameOverScreen() {
     let gameOver = new GameObject(game.canvas,config.gameOver.x, config.gameOver.y, config.gameOver.width, config.gameOver.height, config.gameOver.collision)
     let restart = new GameObject(game.canvas,config.restart.x, config.restart.y, config.restart.width, config.restart.height, config.restart.collision)
     gameOver.setActiveSprite(document.getElementById("game-over"))

@@ -11,6 +11,13 @@ export default class Dino extends GameObject {
     jumpSound;
     dieSound;
 
+    status= "RUNNING";
+
+    statuses = {
+        running: "RUNNING",
+        ducking: "DUCKING",
+        jumping: "JUMPING"
+    }
 
     config = {
         DROP_VELOCITY: -5,
@@ -79,11 +86,14 @@ export default class Dino extends GameObject {
     move() {
         super.move();
 
+        // Fall towards ground
         if (this.y < this.ground()) {
             this.setVelocity(0, this.velocity.y + this.config.GRAVITY)
         }
 
+        // resume running after jump
         if (this.y >= this.ground() && this.velocity.y !== 0) {
+            this.status = this.statuses.running;
             this.setVelocity(0, 0);
             this.animation = true;
             this.y = this.ground()
@@ -92,8 +102,9 @@ export default class Dino extends GameObject {
 
 
     jump() {
-        // Can only jump if dino is on the ground. 80 is ground
+        // Can only jump if dino is on the ground.
         if (this.y === this.ground()) {
+            this.status = this.statuses.jumping;
             this.animation = false;
             this.jumpSound.play()
             // The vertical velocity
@@ -104,26 +115,31 @@ export default class Dino extends GameObject {
     duck() {
         // can only duck on ground
         if (this.y === this.ground()) {
+            this.status = this.statuses.ducking;
             this.setAnimationSprites(this.duckingRunningSprites)
             // set height
             this.width = this.config.WIDTH_DUCK;
             this.height = this.config.HEIGHT_DUCK;
-            this.y = 140 - this.config.HEIGHT_DUCK
-            this.animateNow()
+            this.y = this.ground();
+            this.animateNow();
         }
     }
 
     stand() {
+        this.status = this.statuses.running
         this.setAnimationSprites(this.runningSprites)
-        // set height
         this.width = this.config.WIDTH;
         this.height = this.config.HEIGHT;
         this.y = this.ground();
-        this.animateNow()
+        this.animateNow();
     }
 
     ground() {
-        return 150 - this.config.HEIGHT
+        if (this.status === this.statuses.ducking) {
+            return 150 - this.config.HEIGHT_DUCK;
+        } else {
+            return 150 - this.config.HEIGHT;
+        }
     }
 
     die() {
