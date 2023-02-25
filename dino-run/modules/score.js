@@ -10,7 +10,7 @@ export default class Score extends GameObject{
     scoreSprites = [];
 
     constructor(canvas) {
-        // spawn cloud off canvas
+        // Spawn in top right corner
         super(canvas, 550,  10, 9, 10.5, false);
 
         this.scoreSound = document.getElementById("point-sound")

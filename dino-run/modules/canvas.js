@@ -1,6 +1,4 @@
-//////////////////////////////
-// Canvas drawing functions //
-//////////////////////////////
+// Canvas drawing functions
 export default class Canvas {
 
     constructor(canvasCtx) {

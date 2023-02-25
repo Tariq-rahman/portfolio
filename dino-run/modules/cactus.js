@@ -1,6 +1,5 @@
 import GameObject from "./gameObject.js";
 
-// todo consider builder pattern for this class
 export default class Cactus extends GameObject{
     typeMap = {
         1: {

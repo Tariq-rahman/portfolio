@@ -6,7 +6,6 @@ export default class Bird extends GameObject{
         // spawn off canvas
         super(canvas, canvas.canvasWidth,  20, 50, 50, true);
 
-        // consider retrieving the sprite config from separate file
         this.flyingSprites.push(document.getElementById("bird-1"))
         this.flyingSprites.push(document.getElementById("bird-2"))
         this.setAnimationSprites(this.flyingSprites)

@@ -13,6 +13,5 @@ export default class Background extends GameObject{
         if (this.x < -1200) {
             this.x = 0;
         }
-
     }
 }

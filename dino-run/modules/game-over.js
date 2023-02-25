@@ -1,8 +1,7 @@
 import GameObject from "./gameObject.js";
 
-export default class Cloud extends GameObject{
+export default class GameOver extends GameObject{
     constructor(canvas) {
-        // spawn cloud off canvas
         super(canvas, canvas.canvasWidth,  20, 50, 20, false);
 
         this.setActiveSprite(document.getElementById("cloud"));
@@ -13,7 +12,6 @@ export default class Cloud extends GameObject{
 
     move() {
         super.move();
-        // todo randomise y and maybe x pos
         if (this.x < 0 - this.width) {
             this.x = 600;
         }
