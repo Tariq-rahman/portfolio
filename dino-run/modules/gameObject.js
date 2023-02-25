@@ -69,7 +69,6 @@ export default class GameObject {
     move() {
         this.x += this.velocity.x;
         this.y += this.velocity.y;
-        this.animate();
     }
 
     animate() {
@@ -102,5 +101,11 @@ export default class GameObject {
     // draw self on the canvas
     draw() {
         this.canvas.quickDraw(this.activeSprite, this)
+    }
+
+    update() {
+        this.move();
+        this.animate();
+        this.draw();
     }
 }

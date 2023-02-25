@@ -32,4 +32,8 @@ export default class Canvas {
     quickDraw(img, canvasLocation) {
         this.ctx.drawImage(img, canvasLocation.x, canvasLocation.y, canvasLocation.width, canvasLocation.height);
     }
+
+    draw(img, x, y, w, h) {
+        this.ctx.drawImage(img, x, y, w, h);
+    }
 }

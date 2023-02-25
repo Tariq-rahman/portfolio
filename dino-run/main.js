@@ -3,6 +3,8 @@ import Dino from "./modules/dino.js"
 import Background from "./modules/background.js";
 import Cactus from "./modules/cactus.js";
 import Cloud from "./modules/cloud.js";
+import Bird from "./modules/bird.js";
+import Score from "./modules/score.js";
 
 var game = {
     ctx: null,
@@ -25,7 +27,10 @@ window.addEventListener("load", (event) => {
     let background = new Background(game.canvas);
     let cloud = new Cloud(game.canvas)
     let cactus = new Cactus(game.canvas, 1)
-    game.objects.push(background, cloud, cactus, dino)
+    let bird = new Bird(game.canvas)
+    let score = new Score(game.canvas)
+    // Dino and cactus always last. So, they are drawn on top of background
+    game.objects.push(background, cloud, score, cactus, bird, dino)
     dino.draw()
 });
 
@@ -55,8 +60,7 @@ function runGame() {
 
             // move and draw all objects
             for (let i =0; i < game.objects.length; i++) {
-                game.objects[i].move();
-                game.objects[i].draw();
+                game.objects[i].update()
 
                 // Remove enemy objects that have gone off-screen
                 if (game.objects[i].canCollide === true && game.objects[i].x < 0) {

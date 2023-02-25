@@ -4,6 +4,7 @@ export default class Dino extends GameObject {
 
     runningSprites = [];
     duckingRunningSprites = [];
+    deadSprite;
 
     config = {
         DROP_VELOCITY: -5,
@@ -27,6 +28,7 @@ export default class Dino extends GameObject {
         this.y = this.ground();
 
         this.setActiveSprite(document.getElementById("dino-run-1"));
+        this.deadSprite =
 
         this.runningSprites.push(document.getElementById("dino-run-1"))
         this.runningSprites.push(document.getElementById("dino-run-2"))
