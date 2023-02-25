@@ -3,9 +3,8 @@
 //////////////////////////////
 export default class Canvas {
 
-    constructor(canvasCtx, spriteMap) {
+    constructor(canvasCtx) {
         this.ctx = canvasCtx;
-        this.spriteMap = spriteMap;
         this.canvasHeight = 150;
         this.canvasWidth = 600;
     }
@@ -13,20 +12,6 @@ export default class Canvas {
 
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
-    }
-
-    quickDrawSpriteMap(srcImg, canvasLocation) {
-        this.ctx.drawImage(
-            this.spriteMap,
-            srcImg.x,
-            srcImg.y,
-            srcImg.width,
-            srcImg.height,
-            canvasLocation.x,
-            canvasLocation.y,
-            canvasLocation.width,
-            canvasLocation.height
-        );
     }
 
     quickDraw(img, canvasLocation) {
