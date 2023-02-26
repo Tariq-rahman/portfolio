@@ -1,5 +1,29 @@
+@font-face {
+    font-family: 'press_start_2pregular';
+    src: url('fonts/pressstart2p-regular-webfont.woff2') format('woff2'),
+    url('fonts/pressstart2p-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     text-align: center;
+    color: #535353;
+    font-family: "press_start_2pregular", sans-serif;
+}
+
+h1 {
+    margin-top: 60px;
+}
+
+.container {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    text-align: center;
+    height: 60vh;
 }
 
 .images {
@@ -9,4 +33,27 @@ body {
 canvas {
     margin-top: 50px;
     margin-bottom: 50px;
+}
+
+button {
+    display: inline-block;
+    padding: 0.5em 1em;
+    background-color: #cccccc;
+    border: none;
+    font-size: 1.2em;
+    border-radius: 15px;
+    box-shadow: 0 17px 0 0 #535353;
+    transition: all 0.2s ease;
+    margin-top: 40px;
+    color: #535353;
+    font-family: "press_start_2pregular", sans-serif;
+}
+
+button:hover {
+    color: #a3a3a3;
+}
+button:active {
+    color: #535353;
+    box-shadow: 0 5px 0 0 black;
+    transform: translateY(12px);
 }
