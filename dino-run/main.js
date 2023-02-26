@@ -34,6 +34,16 @@ var gameStarted = false;
 var intervalID;
 
 document.getElementById("start").addEventListener("click", start)
+document.addEventListener("keydown", (event) => {
+    if (gameStarted) {
+        return
+    }
+
+    if (event.code === "Space" || event.code === "ArrowUp") {
+         let button = document.getElementById("start")
+        button.click();
+    }
+})
 
 window.addEventListener("load", (event) => {
     let c = document.getElementById("dino-canvas");
@@ -44,7 +54,7 @@ window.addEventListener("load", (event) => {
     dino.draw()
 });
 
-// Runs the next tick of the main
+// Runs the next tick of the game
 function runGame() {
     // will complete tick every 16 milliseconds which translates to 60 fps
     // 16 * 60 = 960 ms
@@ -101,7 +111,7 @@ function update() {
 // Buttons functions //
 ///////////////////////
 
-// Start the main
+// Start the game. Also does the reset functionality
 function start() {
     if (gameStarted) {
         return;
@@ -120,6 +130,7 @@ function start() {
     game.objects.push(background, cloud, score, bird, cactus, dino)
 
     runGame()
+    document.getElementById("start").blur();
 }
 
 function endGame() {

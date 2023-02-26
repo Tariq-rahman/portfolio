@@ -57,7 +57,7 @@ export default class Dino extends GameObject {
 
         // set up listeners
         document.addEventListener("keydown", (event) => {
-            switch (event.key) {
+            switch (event.code) {
                 case "ArrowUp":
                     this.jump()
                     console.log("up")
