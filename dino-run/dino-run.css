@@ -43,7 +43,7 @@ button {
     font-size: 1.2em;
     border-radius: 15px;
     box-shadow: 0 17px 0 0 #535353;
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
     margin-top: 40px;
     color: #535353;
     font-family: "press_start_2pregular", sans-serif;

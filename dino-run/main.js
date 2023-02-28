@@ -6,6 +6,7 @@ import Cloud from "./modules/cloud.js";
 import Bird from "./modules/bird.js";
 import Score from "./modules/score.js";
 import GameObject from "./modules/gameObject.js";
+import HighScore from "./modules/high-score.js";
 
 var config = {
     gameOver: {
@@ -142,9 +143,22 @@ function endGame() {
 function drawGameOverScreen() {
     let gameOver = new GameObject(game.canvas,config.gameOver.x, config.gameOver.y, config.gameOver.width, config.gameOver.height, config.gameOver.collision)
     let restart = new GameObject(game.canvas,config.restart.x, config.restart.y, config.restart.width, config.restart.height, config.restart.collision)
+    let highScore = new HighScore(game.canvas, getScore())
     gameOver.setActiveSprite(document.getElementById("game-over"))
     restart.setActiveSprite(document.getElementById("restart"))
 
     gameOver.draw()
     restart.draw()
+    highScore.draw()
+}
+
+function getScore() {
+    for (let i = 0; i < game.objects.length; i++) {
+        let className = game.objects[i].constructor.name
+        if (className === 'Score') {
+            return game.objects[i].score;
+        }
+    }
+
+    throw("Score has not been initialised!");
 }
