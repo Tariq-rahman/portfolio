@@ -3,11 +3,16 @@ import Score from "./score.js";
 
 export default class HighScore extends GameObject{
 
+    // image of "HI" to annotate high score
     labelSprite;
+    // Gap between "HI" and the score number
     gap = 10;
-    expiryDays = 30;
+    // Score object to display high score
     scoreObject;
+    // Name of the cookie used to store score
     cookieName = "dino-run"
+    // How long the cookie will stay alive for
+    expiryDays = 30;
 
     constructor(canvas, score) {
         // Spawn in top right corner
@@ -16,6 +21,7 @@ export default class HighScore extends GameObject{
         this.scoreObject = new Score(canvas)
         this.scoreObject.x = this.x + this.width + this.gap;
 
+        // Load the previous high score and replace it if this score is higher
         let pastHighScore = this.loadScore()
         if (score > pastHighScore) {
             this.saveScore(score)
@@ -27,6 +33,7 @@ export default class HighScore extends GameObject{
         this.labelSprite = document.getElementById("hi")
     }
 
+    // Save the score to the cookie and set the expiry date
     saveScore(score) {
         const d = new Date();
         d.setTime(d.getTime() + (this.expiryDays*24*60*60*1000));
@@ -35,6 +42,8 @@ export default class HighScore extends GameObject{
         document.cookie = this.cookieName + "=" + score + ";" + expires + ";path=/";
     }
 
+    // Get the score from the cookie
+    // if not found return 0
     loadScore() {
         let name = this.cookieName + "=";
         let cookie = decodeURIComponent(document.cookie);
@@ -56,6 +65,7 @@ export default class HighScore extends GameObject{
         return 0;
     }
 
+    // Draw the high score then invert the colour to make it a different colour to the normal score
     draw() {
         this.canvas.quickDraw(this.labelSprite, this)
         this.scoreObject.calculateDisplayScore();
