@@ -2,11 +2,11 @@ import Canvas from "./modules/canvas.js";
 import Dino from "./modules/dino.js"
 import Background from "./modules/background.js";
 import Cactus from "./modules/cactus.js";
-import Cloud from "./modules/cloud.js";
 import Bird from "./modules/bird.js";
 import Score from "./modules/score.js";
 import GameObject from "./modules/gameObject.js";
 import HighScore from "./modules/high-score.js";
+import CloudController from "./modules/cloudController.js";
 
 var config = {
     gameOver: {
@@ -30,6 +30,7 @@ var game = {
     spriteMap: null,
     canvas: null,
     objects: [],
+    controllers: [],
 };
 var gameStarted = false;
 var intervalID;
@@ -80,6 +81,10 @@ function update() {
     }
     game.canvas.clearCanvas()
 
+    for (let i = 0; i < game.controllers.length; i++) {
+        game.controllers[i].update()
+    }
+
     // move and draw all objects
     for (let i =0; i < game.objects.length; i++) {
         game.objects[i].update()
@@ -120,15 +125,18 @@ function start() {
 
     gameStarted = true;
     game.objects = [];
+    game.controllers = [];
     let dino = new Dino(game.canvas);
     let background = new Background(game.canvas);
-    let cloud = new Cloud(game.canvas)
+    let cloudController = new CloudController(game.canvas)
+    cloudController.spawn(cloudController.maxClouds)
     let cactus = new Cactus(game.canvas, 1)
-    let bird = new Bird(game.canvas)
+    // let bird = new Bird(game.canvas)
     let score = new Score(game.canvas)
 
     // Dino and cactus always last. So, they are drawn on top of background
-    game.objects.push(background, cloud, score, bird, cactus, dino)
+    game.objects.push(background, score, cactus, dino)
+    game.controllers.push(cloudController)
 
     runGame()
     document.getElementById("start").blur();

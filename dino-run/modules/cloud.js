@@ -10,12 +10,4 @@ export default class Cloud extends GameObject{
         // Set velocity to move left
         this.setVelocity(-3,0)
     }
-
-    move() {
-        super.move();
-        // todo randomise y and maybe x pos
-        if (this.x < 0 - this.width) {
-            this.x = 600;
-        }
-    }
 }
