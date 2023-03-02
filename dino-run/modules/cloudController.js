@@ -13,7 +13,7 @@ export default class CloudController {
         this.canvas = canvas;
     }
 
-    randomisePosition() {
+    generateRandomPosition() {
         let pos = {
             x: 0,
             y: 0,
@@ -22,22 +22,28 @@ export default class CloudController {
         pos.x = Math.floor(Math.random() * (this.maxX - this.minX)) + this.minX // generates a random number between 600 ~ 1200
         pos.y = Math.floor(Math.random() * (this.maxY - this.minY)) + this.minY // rand num between min y and max y
 
-        // Check if there is overlap. if there is, increase the position of x/y
+        return pos;
+    }
+
+    checkOverlap(pos) {
         for (let i = 0; i < this.clouds.length; i++) {
-            let xDiff = Math.abs(this.clouds[i].x - pos.x)
-            let yDiff = Math.abs(this.clouds[i].y - pos.y)
 
-            if (xDiff <= this.clouds[i].width) {
-                pos.x  += this.clouds[i].width;
+            if (this.clouds[i].isCollided(pos)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    randomisePosition() {
+        let pos = this.generateRandomPosition();
+        for (let i = 0; i < 10; i++) {
+            if (!this.checkOverlap(pos)) {
+                break;
             }
 
-            if (yDiff < this.clouds[i].height) {
-                if (pos.y + yDiff >= this.maxY) {
-                    pos.y -= this.clouds[i].height;
-                } else {
-                    pos.y += this.clouds[i].height;
-                }
-            }
+            pos = this.generateRandomPosition()
         }
 
         return pos;
