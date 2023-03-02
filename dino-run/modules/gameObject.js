@@ -38,32 +38,11 @@ export default class GameObject {
         this.activeSprite = sprite
     }
 
-    // Checks if this gameObject has collided with another game object
-    // todo add leniency coefficient
-    isCollided(gameObject) {
-        if (this.canCollide === false) {
-            return false;
-        }
+    isCollided(gameObject, xLeniency = 0, yLeniency = 0) {
+        let xDiff = Math.abs(gameObject.x - this.x) + xLeniency
+        let yDiff = Math.abs(gameObject.y - this.y) + yLeniency
 
-        // x plane collision
-        let xPlane = false
-        if (
-            (this.x >= gameObject.x && this.x < gameObject.x + gameObject.width)
-            || (this.x + this.width > gameObject.x && this.x < gameObject.x)
-        ) {
-            xPlane = true
-        }
-
-        // y plane collision
-        let yPlane = false
-        if (
-            (this.y >= gameObject.y && this.y < gameObject.y + gameObject.height)
-            || (this.y + this.height > gameObject.y && this.y < gameObject.y)
-        ) {
-            yPlane = true
-        }
-
-        return xPlane && yPlane;
+        return xDiff < this.width && yDiff < this.height;
     }
 
     // Set the velocity

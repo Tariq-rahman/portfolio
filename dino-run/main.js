@@ -73,7 +73,7 @@ function update() {
             continue;
         }
 
-        if (dino.isCollided(game.objects[i])) {
+        if (dino.isCollided(game.objects[i], 10, 10)) {
             dino.die()
             endGame()
             break;
