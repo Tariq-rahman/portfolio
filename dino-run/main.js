@@ -1,12 +1,11 @@
 import Canvas from "./modules/canvas.js";
 import Dino from "./modules/dino.js"
 import Background from "./modules/background.js";
-import Cactus from "./modules/cactus.js";
-import Bird from "./modules/bird.js";
 import Score from "./modules/score.js";
 import GameObject from "./modules/gameObject.js";
 import HighScore from "./modules/high-score.js";
 import CloudController from "./modules/cloudController.js";
+import EnemyController from "./modules/enemyController.js";
 
 var config = {
     gameOver: {
@@ -29,8 +28,11 @@ var game = {
     ctx: null,
     spriteMap: null,
     canvas: null,
-    objects: [],
-    controllers: [],
+    cloudController: [],
+    enemyController: [],
+    background: null,
+    dino: null,
+    score: null,
 };
 var gameStarted = false;
 var intervalID;
@@ -67,46 +69,20 @@ function runGame() {
 
 function update() {
     // Check for collisions
-    let dino = game.objects[game.objects.length - 1]
-    for (let i =0; i < game.objects.length -1; i++) {
-        if (!game.objects[i].canCollide) {
-            continue;
-        }
-
-        if (dino.isCollided(game.objects[i], 10, 10)) {
-            dino.die()
+    for (let i = 0; i < game.enemyController.gameObjects.length; i++) {
+        if (game.dino.isCollided(game.enemyController.gameObjects[i], 7, 7)) {
+            game.dino.die()
             endGame()
             break;
         }
     }
+
     game.canvas.clearCanvas()
-
-    for (let i = 0; i < game.controllers.length; i++) {
-        game.controllers[i].update()
-    }
-
-    // move and draw all objects
-    for (let i =0; i < game.objects.length; i++) {
-        game.objects[i].update()
-
-        // Remove enemy objects that have gone off-screen
-        if (game.objects[i].canCollide === true && game.objects[i].x < 0) {
-            let enemyClass = game.objects[i].constructor.name
-
-            let enemy;
-            if (enemyClass.toString() === "Cactus") {
-                enemy = new Cactus(game.canvas, 1)
-            }
-
-            if (enemyClass.toString() === "Bird") {
-                enemy = new Bird(game.canvas)
-            }
-
-            // todo make enemy random
-            game.objects.splice(i, 1, enemy)
-
-        }
-    }
+    game.background.update()
+    game.cloudController.update()
+    game.enemyController.update()
+    game.score.update()
+    game.dino.update()
 
     if (!gameStarted) {
         drawGameOverScreen()
@@ -124,19 +100,23 @@ function start() {
     }
 
     gameStarted = true;
-    game.objects = [];
-    game.controllers = [];
+    game.cloudController = [];
+    game.enemyController = [];
+
     let dino = new Dino(game.canvas);
     let background = new Background(game.canvas);
     let cloudController = new CloudController(game.canvas)
-    cloudController.spawn(cloudController.maxClouds)
-    let cactus = new Cactus(game.canvas, 1)
-    // let bird = new Bird(game.canvas)
+    let enemyController = new EnemyController(game.canvas)
     let score = new Score(game.canvas)
 
-    // Dino and cactus always last. So, they are drawn on top of background
-    game.objects.push(background, score, cactus, dino)
-    game.controllers.push(cloudController)
+    cloudController.spawn()
+    enemyController.spawn()
+
+    game.background = background;
+    game.score = score;
+    game.dino = dino;
+    game.cloudController = cloudController;
+    game.enemyController = enemyController;
 
     runGame()
     document.getElementById("start").blur();
@@ -151,22 +131,11 @@ function endGame() {
 function drawGameOverScreen() {
     let gameOver = new GameObject(game.canvas,config.gameOver.x, config.gameOver.y, config.gameOver.width, config.gameOver.height, config.gameOver.collision)
     let restart = new GameObject(game.canvas,config.restart.x, config.restart.y, config.restart.width, config.restart.height, config.restart.collision)
-    let highScore = new HighScore(game.canvas, getScore())
+    let highScore = new HighScore(game.canvas, game.score)
     gameOver.setActiveSprite(document.getElementById("game-over"))
     restart.setActiveSprite(document.getElementById("restart"))
 
     gameOver.draw()
     restart.draw()
     highScore.draw()
-}
-
-function getScore() {
-    for (let i = 0; i < game.objects.length; i++) {
-        let className = game.objects[i].constructor.name
-        if (className === 'Score') {
-            return game.objects[i].score;
-        }
-    }
-
-    throw("Score has not been initialised!");
 }

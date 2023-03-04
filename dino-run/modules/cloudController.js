@@ -50,26 +50,21 @@ export default class CloudController {
     }
 
     new() {
+        if (this.clouds.length === this.maxClouds) {
+            return
+        }
+
         const c = new Cloud(this.canvas)
         let randPos = this.randomisePosition()
         c.x = randPos.x;
         c.y = randPos.y;
 
-        if (this.clouds.length === this.maxClouds) {
-            this.clouds.shift()
-        }
-
         this.clouds.push(c)
     }
 
-    // Spawn a given number of clouds. Cannot be greater than maxClouds
-    // If it is, it will be overwritten
-    spawn(num) {
-        if (num > this.maxClouds) {
-           num = this.maxClouds
-        }
-
-        for (let i = 0; i < num; i++) {
+    // Spawns the max amount of clouds
+    spawn() {
+        for (let i = 0; i < this.maxClouds; i++) {
             this.new()
         }
     }
