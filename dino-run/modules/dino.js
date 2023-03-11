@@ -59,16 +59,11 @@ export default class Dino extends GameObject {
         document.addEventListener("keydown", (event) => {
             switch (event.code) {
                 case "ArrowUp":
+                case "Space":
                     this.jump()
-                    console.log("up")
                     break;
                 case "ArrowDown":
                     this.duck()
-                    console.log("down")
-                    break;
-                case "Space":
-                    this.jump()
-                    console.log("space")
                     break;
             }
         });
@@ -102,8 +97,8 @@ export default class Dino extends GameObject {
 
 
     jump() {
-        // Can only jump if dino is on the ground.
-        if (this.y === this.ground()) {
+        // Can only jump if dino is on the ground and not ducking
+        if (this.y === this.ground() && this.status !== this.statuses.ducking) {
             this.status = this.statuses.jumping;
             this.animation = false;
             this.jumpSound.play()
@@ -113,14 +108,23 @@ export default class Dino extends GameObject {
     }
 
     duck() {
-        // can only duck on ground
+        // If we're already ducking, no need to do anything
+        if (this.status === this.statuses.ducking) {
+            return;
+        }
+
+        // Can only duck on ground
         if (this.y === this.ground()) {
+            // Set the status to ducking
             this.status = this.statuses.ducking;
-            this.setAnimationSprites(this.duckingRunningSprites)
-            // set height
+
+            // Set height, width and position
             this.width = this.config.WIDTH_DUCK;
             this.height = this.config.HEIGHT_DUCK;
             this.y = this.ground();
+
+            // Sort out animation
+            this.setAnimationSprites(this.duckingRunningSprites)
             this.animateNow();
         }
     }
