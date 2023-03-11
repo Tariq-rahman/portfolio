@@ -3,12 +3,23 @@ import GameObject from "./gameObject.js";
 export default class Score extends GameObject{
 
     floatScore = 0;
-    gap = 1.5;
+    scoringRate = 0.1;
     score = 0;
-    maxDigits = 5;
+    celebrate = false;
+    blinking = true;
+    celebrateTimer;
+    celebrateScore;
     scoreSound;
     scoreDisplay = []; // max 5 digits
     scoreSprites = [];
+    emptySprite;
+
+    config = {
+        MAX_TIMER: 90, //150 frames ~ 2 seconds
+        BLINK_INTERVAL: 15,
+        MAX_DIGITS: 5,
+        GAP: 1.5,
+    };
 
     constructor(canvas) {
         // Spawn in top right corner
@@ -27,25 +38,53 @@ export default class Score extends GameObject{
         this.scoreSprites.push(document.getElementById('7'))
         this.scoreSprites.push(document.getElementById('8'))
         this.scoreSprites.push(document.getElementById('9'))
+        this.emptySprite = document.getElementById("empty")
 
         // set up zeros
-        for (let i = 0; i < this.maxDigits; i++) {
+        for (let i = 0; i < this.config.MAX_DIGITS; i++) {
 
             this.scoreDisplay.push(this.scoreSprites[0])
         }
+
+        this.celebrateTimer = this.config.MAX_TIMER;
     }
 
     draw() {
         for (let i = 0; i < this.scoreDisplay.length; i++) {
-            this.canvas.draw(this.scoreDisplay[i], this.x + (i * (this.width + this.gap)), this.y, this.width, this.height)
+            this.canvas.draw(this.scoreDisplay[i], this.x + (i * (this.width + this.config.GAP)), this.y, this.width, this.height)
         }
     }
 
-    calculateDisplayScore() {
+    drawBlinkAnimation() {
+        if (this.blinking) {
+            for (let i = 0; i < this.scoreDisplay.length; i++) {
+                this.canvas.draw(this.emptySprite, this.x + (i * (this.width + this.config.GAP)), this.y, this.width, this.height)
+            }
+        } else {
+            // draw regular score
+            this.calculateDisplayScore(this.celebrateScore)
+            for (let i = 0; i < this.scoreDisplay.length; i++) {
+                this.canvas.draw(this.scoreDisplay[i], this.x + (i * (this.width + this.config.GAP)), this.y, this.width, this.height)
+            }
+        }
+
+        if (this.celebrateTimer % this.config.BLINK_INTERVAL === 0) {
+            this.blinking = !this.blinking;
+        }
+
+    }
+
+    calculateDisplayScore(customScore) {
+        let score;
         // convert to string so we count number of characters
-        let score = this.score.toString()
+        if (customScore > 0 ) {
+            score = customScore.toString()
+        } else {
+            score = this.score.toString()
+        }
+
         // Score should be displayed like 00056, so we first need to insert 0's
-        let numOfZeros = this.maxDigits - score.length
+        let numOfZeros = this.config.MAX_DIGITS - score.length
 
         let stringScore = '';
         for (let i = 0; i < numOfZeros; i++) {
@@ -62,21 +101,40 @@ export default class Score extends GameObject{
     }
 
     incrementScore() {
-        this.floatScore += 0.1;
+        this.floatScore += this.scoringRate;
         this.score = Math.floor(this.floatScore);
         if (this.score % 100 === 0 && this.score !== 0) {
             this.scoreSound.play()
-            this.blinkAnimation()
+            // Reached a milestone of a 100, can celebrate now
+            this.celebrate = true;
+            this.celebrateScore = this.score;
         }
     }
 
-    blinkAnimation() {
+    countDownCelebrate() {
+        if (!this.celebrate) {
+            return
+        }
 
+        if (this.celebrateTimer !== 0) {
+            this.celebrateTimer--
+            return
+        }
+
+        this.celebrate = false;
+        this.blinking = true;
+        this.celebrateTimer = this.config.MAX_TIMER;
     }
 
     update() {
         this.incrementScore()
         this.calculateDisplayScore()
-        this.draw()
+        this.countDownCelebrate()
+
+        if (this.celebrate) {
+            this.drawBlinkAnimation()
+        } else {
+            this.draw()
+        }
     }
 }
