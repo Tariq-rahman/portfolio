@@ -74,7 +74,7 @@ export default class HighScore extends GameObject{
         this.canvas.invertColour(
             this.x,
             this.y,
-            this.width + this.gap + this.scoreObject.maxDigits * (this.scoreObject.width + this.scoreObject.gap),
+            this.width + this.gap + this.scoreObject.config.MAX_DIGITS * (this.scoreObject.width + this.scoreObject.config.GAP),
             this.height
         );
     }
