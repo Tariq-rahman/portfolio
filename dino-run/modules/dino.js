@@ -11,8 +11,8 @@ export default class Dino extends GameObject {
     jumpSound;
     dieSound;
 
-    status= "RUNNING";
-
+    // Statuses
+    status = "RUNNING";
     statuses = {
         running: "RUNNING",
         ducking: "DUCKING",
@@ -26,10 +26,9 @@ export default class Dino extends GameObject {
         HEIGHT_DUCK: 30,
         INITIAL_JUMP_VELOCITY: -10,
         INTRO_DURATION: 1500,
-        // MAX_JUMP_HEIGHT: 30,
-        // MIN_JUMP_HEIGHT: 30,
+        MAX_JUMP_HEIGHT: 30,
+        MIN_JUMP_HEIGHT: 30,
         // SPEED_DROP_COEFFICIENT: 3,
-        // START_X_POS: 50,
         WIDTH: 44,
         WIDTH_DUCK: 59
     };
@@ -53,7 +52,7 @@ export default class Dino extends GameObject {
         this.duckingRunningSprites.push(document.getElementById("dino-duck-2"))
 
         this.setAnimationSprites(this.runningSprites)
-        this.animation = true;
+        this.playAnimation()
 
         // set up listeners
         document.addEventListener("keydown", (event) => {
@@ -88,28 +87,36 @@ export default class Dino extends GameObject {
 
         // resume running after jump
         if (this.y >= this.ground() && this.velocity.y !== 0) {
+            console.log("resumed running")
             this.status = this.statuses.running;
             this.setVelocity(0, 0);
-            this.animation = true;
+            this.playAnimation()
             this.y = this.ground()
        }
     }
 
 
     jump() {
-        // Can only jump if dino is on the ground and not ducking
-        if (this.y === this.ground() && this.status !== this.statuses.ducking) {
-            this.status = this.statuses.jumping;
-            this.animation = false;
-            this.jumpSound.play()
-            // The vertical velocity
-            this.setVelocity(0, this.config.INITIAL_JUMP_VELOCITY);
+        // Can't jump if ducking
+        if (this.isDucking()) {
+            return;
         }
+
+        // Can only jump if dino is on the ground
+        if (this.y !== this.ground()) {
+            console.log("not on ground yet")
+            return;
+        }
+
+        this.status = this.statuses.jumping;
+        this.stopAnimation()
+        this.jumpSound.play()
+        this.setVelocity(0, this.config.INITIAL_JUMP_VELOCITY);
     }
 
     duck() {
         // If we're already ducking, no need to do anything
-        if (this.status === this.statuses.ducking) {
+        if (this.isDucking()) {
             return;
         }
 
@@ -130,6 +137,10 @@ export default class Dino extends GameObject {
     }
 
     stand() {
+        if (this.isJumping()) {
+            return
+        }
+
         this.status = this.statuses.running
         this.setAnimationSprites(this.runningSprites)
         this.width = this.config.WIDTH;
@@ -138,11 +149,19 @@ export default class Dino extends GameObject {
         this.animateNow();
     }
 
+    isDucking() {
+        return this.status === this.statuses.ducking;
+    }
+
+    isJumping() {
+        return this.status === this.statuses.jumping;
+    }
+
     ground() {
         if (this.status === this.statuses.ducking) {
-            return 150 - this.config.HEIGHT_DUCK;
+            return this.canvas.canvasHeight - this.config.HEIGHT_DUCK;
         } else {
-            return 150 - this.config.HEIGHT;
+            return this.canvas.canvasHeight - this.config.HEIGHT;
         }
     }
 
@@ -150,8 +169,9 @@ export default class Dino extends GameObject {
         if (this.height === this.config.HEIGHT_DUCK) {
             this.stand()
         }
+
         this.setActiveSprite(this.deadSprite)
-        this.animation = false;
+        this.stopAnimation()
         this.dieSound.play()
     }
 }

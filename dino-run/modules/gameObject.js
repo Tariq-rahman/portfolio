@@ -90,6 +90,14 @@ export default class GameObject {
         }
     }
 
+    stopAnimation() {
+        this.animation = false;
+    }
+
+    playAnimation() {
+        this.animation = true;
+    }
+
     // draw self on the canvas
     draw() {
         this.canvas.quickDraw(this.activeSprite, this)

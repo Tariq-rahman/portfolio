@@ -1,12 +1,14 @@
 // Canvas drawing functions
 export default class Canvas {
+    ctx;
+    canvasHeight;
+    canvasWidth;
 
     constructor(canvasCtx) {
         this.ctx = canvasCtx;
         this.canvasHeight = 150;
         this.canvasWidth = 600;
     }
-
 
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight)

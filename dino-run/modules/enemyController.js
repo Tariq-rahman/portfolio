@@ -7,7 +7,7 @@ export default class EnemyController {
         minX: 600,
         maxX: 1800,
         minY: 20,
-        maxY: 80,
+        maxY: 90,
         maxObjects: 1,
     }
     cactusConfig = {
